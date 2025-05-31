@@ -189,7 +189,7 @@ if ($sub_role == "paint_main") {
                 <div class="row">
                     <div class="col-lg-12 main-chart">
 
-                        <h1>Main Store History</h1>
+                        <h1>Paint Mini Store History</h1>
                         <div class="row mt">
                             <div class="col-lg-12">
                                 <div class="content-panel">
@@ -197,17 +197,17 @@ if ($sub_role == "paint_main") {
                                     <?php
                                     include("connect.php");
                                     $main_store_query = "SELECT 
-                    main_store_history.transaction_id, main_store_history.item_code, main_store_history.requested_by,
-                    main_store_history.team1_accept, main_store_history.team2_accept, main_store_history.stock_in,
-                    main_store_history.stock_out, main_store_history.balance, main_store_history.saved_date,
+                    paint_mini_store_history.transaction_id, paint_mini_store_history.item_code, paint_mini_store_history.requested_by,
+                    paint_mini_store_history.team1_accept, paint_mini_store_history.team2_accept, paint_mini_store_history.stock_in,
+                    paint_mini_store_history.stock_out, paint_mini_store_history.balance, paint_mini_store_history.saved_date,
                     inventory_items.item_description AS item_description, inventory_items.category AS category, 
                     inventory_items.uom AS uom
-                    FROM main_store_history 
-                    INNER JOIN inventory_items ON main_store_history.item_code = inventory_items.item_code $val";
+                    FROM paint_mini_store_history 
+                    INNER JOIN inventory_items ON paint_mini_store_history.item_code = inventory_items.item_code $val";
                                     $main_store_query_run = mysqli_query($conn, $main_store_query);
                                     $main_store_query_run_data = mysqli_fetch_all($main_store_query_run, MYSQLI_ASSOC);
 
-                                    $request_query = "SELECT * FROM main_store_request where status='active'";
+                                    $request_query = "SELECT * FROM paint_mini_store_request where status='active'";
                                     $request_query_run = mysqli_query($conn, $request_query);
 
                                     if ($request_query_run) {
@@ -314,7 +314,7 @@ if ($sub_role == "paint_main") {
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form method="POST" action="../../assets/php_query/main_store_query/history_query.php">
+                                    <form method="POST" action="../../assets/php_query/paint_mini_store/history_query.php">
                                         <div class="form-group">
                                             <label for="report_date">Select Date</label>
                                             <input type="date" name="report_date" id="report_date" class="form-control" required>

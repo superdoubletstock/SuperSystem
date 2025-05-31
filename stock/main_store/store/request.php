@@ -171,6 +171,13 @@ if ($sub_role == "paint_main") {
                         </a>
 
                     </li>
+                       <li class="sub-menu">
+                        <a href="incoming_notification.php">
+                            <i class="fa fa-book"></i>
+                            <span>Incoming Notification</span>
+                        </a>
+
+                    </li>
 
                     <li class="sub-menu">
                         <a href="history.php">
@@ -211,7 +218,20 @@ if ($sub_role == "paint_main") {
                                     include("connect.php");
 
                                     $main_store_query = "SELECT 
-                 main_store_request.In_out,main_store_request.team2_accept,main_store_request.department,main_store_request.status_temp,main_store_request.cancel,main_store_request.team1_accepet,main_store_request.qnty ,main_store_request.transaction_id,main_store_request.requested_date,main_store_request.InFrom_OutTo,main_store_request.requested_by,main_store_request.In_Out,main_store_request.team1,main_store_request.team2 ,
+                 main_store_request.In_out,
+                 main_store_request.team2_accept,
+                 main_store_request.department,
+             
+                 main_store_request.cancel,
+                 main_store_request.team1_accepet,
+                 main_store_request.qnty ,
+                 main_store_request.transaction_id,
+                 main_store_request.requested_date,
+                 main_store_request.InFrom_OutTo,
+                 main_store_request.requested_by,
+                 main_store_request.In_Out,
+                 main_store_request.team1,
+                 main_store_request.team2 ,
                 inventory_items.item_description AS item_description ,inventory_items.item_code AS item_code ,inventory_items.category AS category, inventory_items.uom AS uom
                 FROM main_store_request INNER JOIN inventory_items ON main_store_request.item_code = inventory_items.item_code where status='active' and cancel='0' $val";
                                     $main_store_query_run = mysqli_query($conn, $main_store_query);
@@ -300,14 +320,36 @@ if ($sub_role == "paint_main") {
                                                             echo $msg;
 
                                                             ?>
+
                                                         </td>
 
-
-                                                   <td>
+                                                        <?php 
+                                                       
+                                                        if($request['team1']==1 && $request['team1']==1){
+                                                            ?>
+                                                             <td>
                                                                 <button class="btn btn-warning deleteRequestBtn"
                                                                     data-toggle="modal" data-target="#deleteRequestmodal"
-                                                                    data-id="<?php echo $request['transaction_id']; ?>">Cancel</button>
+                                                                    data-id="<?php echo $request['transaction_id']; ?>" disabled>Cancel</button>
                                                             </td>
+
+                                                            <?php
+                                                        }else{
+
+                                                              ?>
+                                                             <td>
+                                                                <button class="btn btn-warning deleteRequestBtn"
+                                                                    data-toggle="modal" data-target="#deleteRequestmodal"
+                                                                    data-id="<?php echo $request['transaction_id']; ?>" >Cancel</button>
+                                                            </td>
+
+                                                            <?php
+
+                                                        }
+                                                        
+                                                        ?>
+
+                                                 
                                                    
 
 

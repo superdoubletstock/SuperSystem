@@ -120,7 +120,7 @@ $password = $_SESSION['password']; // Not recommended to show
                     ?>
 
                     <li class="mt">
-                        <a class="active" href="dashboard.php">
+                        <a class="active" href="#">
                             <i class="fa fa-dashboard"></i>
                             <span>Dashboard</span>
                         </a>
@@ -140,15 +140,8 @@ $password = $_SESSION['password']; // Not recommended to show
                         </a>
 
                     </li>
-                    <li class="sub-menu">
-                        <a href="incoming_notification.php">
-                            <i class="fa fa-book"></i>
-                            <span>Incoming Notification</span>
-                        </a>
 
-                    </li>
-
-
+                    
                     <li class="sub-menu">
                         <a href="history.php">
                             <i class="fa fa-book"></i>
@@ -297,7 +290,7 @@ $password = $_SESSION['password']; // Not recommended to show
                     </div><!-- /col-lg-9 END SECTION MIDDLE -->
 
 
-
+        
                     <div class="col-lg-3 ds">
                         <!--COMPLETED ACTIONS DONUTS CHART-->
                         <!-- CALENDAR-->

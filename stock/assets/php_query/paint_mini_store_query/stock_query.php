@@ -34,33 +34,68 @@ if (isset($_POST['StockIn'])) {
         }
     }
     // ***************************inventory_query*******************************************
-    // ***************************inventory_query*******************************************
-    $main_store_balance_query = "SELECT * FROM main_store_balance WHERE item_code = '$item_code'";
-    $main_store_balance_run = mysqli_query($conn, $main_store_balance_query);
+    // ***************************inventory_query_balance*******************************************
+    $paint_mini_store_balance_query = "SELECT * FROM paint_mini_store_balance WHERE item_code = '$item_code'";
+    $paint_mini_store_balance_run = mysqli_query($conn, $paint_mini_store_balance_query);
     // Check if any rows were returned
-    if (mysqli_num_rows($main_store_balance_run) == 0) {
+    if (mysqli_num_rows($paint_mini_store_balance_run) == 0) {
         // No rows found, insert new record
-        $main_store_balance_insert = "INSERT INTO main_store_balance(item_code, balance,status) VALUES ('$item_code', '$db_new_balance','$status')";
-        mysqli_query($conn, $main_store_balance_insert);
+        $paint_mini_store_balance_insert = "INSERT INTO paint_mini_store_balance(item_code, balance,status) VALUES ('$item_code', '$db_new_balance','$status')";
+        mysqli_query($conn, $paint_mini_store_balance_insert);
     } else {
         echo "the item already exist in db";
     }
 
-    // ***************************inventory_query*******************************************
-    $main_store_request = "INSERT INTO main_store_request(item_code,team1,team2,department,requested_by,qnty,In_Out,InFrom_OutTo,status,cancel)
-     VALUES ('$item_code','$pending','$pending','$department','$received_by','$qnty','$In_Out','$remark','$status','$cancel')";
-    // Execute the query
-    if ($conn->query($main_store_request) === TRUE) {
+    // ***************************inventory_query_balance*******************************************
 
+    // ***************************inventory_query_balance_main_store*******************************************
+    $paint_to_main_check = "SELECT balance FROM main_store_balance WHERE item_code = '$item_code'";
+    $paint_to_main_check_run = mysqli_query($conn, $paint_to_main_check);
+
+    // Check if the item exists in the result
+    if (mysqli_num_rows($paint_to_main_check_run) > 0) {
+        $row = mysqli_fetch_assoc($paint_to_main_check_run);
+        $balance = $row['balance'];
+
+        // Compare the balance with the requested quantity
+        if ($balance >= $qnty) {
+
+            echo "Sufficient";
+            $paint_mini_store_request = "INSERT INTO paint_mini_store_request(item_code,team1,team2,department,requested_by,qnty,In_Out,InFrom_OutTo,status,cancel)
+     VALUES ('$item_code','$pending','$pending','$department','$received_by','$qnty','$In_Out','$remark','$status','$cancel')";
+            // Execute the query
+            if ($conn->query($paint_mini_store_request) === TRUE) {
+            } else {
+                echo "Error: " . $paint_mini_store_request . "<br>" . $conn->error;
+            }
+?>
+            <script>
+                alert("Request Successful");
+                window.location = "../../../paint_mini_store/store/stock.php";
+            </script>
+        <?php
+
+        } else {
+            echo "Insufficient";
+
+        ?>
+            <script>
+                alert("The balance of main store is insufficent for your request!!NOTIFY THEM");
+                window.location = "../../../paint_mini_store/store/stock.php";
+            </script>
+        <?php
+        }
     } else {
-        echo "Error: " . $main_store_request . "<br>" . $conn->error;
-    }
-    ?>
-    <script>
-        alert("Request Successful");
-        window.location = "../../../main_store/store/stock.php";
-    </script>
+        ?>
+        <script>
+            alert("The item is not found in main store");
+            window.location = "../../../paint_mini_store/store/stock.php";
+        </script>
     <?php
+    }
+
+    // ***************************inventory_query_balance_main_store*******************************************
+
 
 }
 if (isset($_POST['StockOut'])) {
@@ -99,32 +134,31 @@ if (isset($_POST['StockOut'])) {
     // ***************************inventory_query*******************************************
 
     // ***************************balance_query*******************************************
-    $main_store_balance_query = "SELECT * FROM main_store_balance WHERE item_code = '$item_code'";
-    $main_store_balance_run = mysqli_query($conn, $main_store_balance_query);
+    $paint_mini_store_balance_query = "SELECT * FROM paint_mini_store_balance WHERE item_code = '$item_code'";
+    $paint_mini_store_balance_run = mysqli_query($conn, $paint_mini_store_balance_query);
     // Check if any rows were returned
-    if (mysqli_num_rows($main_store_balance_run) == 0) {
+    if (mysqli_num_rows($paint_mini_store_balance_run) == 0) {
         // No rows found, insert new record
-        $main_store_balance_insert = "INSERT INTO main_store_balance(item_code, balance,status) VALUES ('$item_code', '$db_new_balance','$status')";
-        mysqli_query($conn, $main_store_balance_insert);
+        $paint_mini_store_balance_insert = "INSERT INTO paint_mini_store_balance(item_code, balance,status) VALUES ('$item_code', '$db_new_balance','$status')";
+        mysqli_query($conn, $paint_mini_store_balance_insert);
     } else {
         echo "the item already exist in db";
     }
 
     // ***************************balance_query+
-    $main_store_request = "INSERT INTO main_store_request(item_code,team1,team2,department,requested_by,qnty,In_Out,InFrom_OutTo,status,cancel) 
+    $paint_mini_store_request = "INSERT INTO paint_mini_store_request(item_code,team1,team2,department,requested_by,qnty,In_Out,InFrom_OutTo,status,cancel) 
     VALUES ('$item_code','$pending','$pending','$department','$received_by','$qnty','$In_Out','$remark','$status','$cancel')";
     // Execute the query
-    if ($conn->query($main_store_request) === TRUE) {
-
+    if ($conn->query($paint_mini_store_request) === TRUE) {
     } else {
-        echo "Error: " . $main_store_request . "<br>" . $conn->error;
+        echo "Error: " . $paint_mini_store_request . "<br>" . $conn->error;
     }
     ?>
     <script>
         alert("Request Successful");
-        window.location = "../../../main_store/store/stock.php";
+        window.location = "../../../paint_mini_store/store/stock.php";
     </script>
-    <?php
+<?php
 }
 if (isset($_POST['delete_stock_item'])) {
     // Get the item code selected in the form
@@ -156,15 +190,13 @@ if (isset($_POST['delete_stock_item'])) {
     }
     // ***************************inventory_query*******************************************
 
-
-
     // Prepared statement
-    $stmt = $conn->prepare("UPDATE main_store_balance SET status = ? WHERE item_code = ?");
+    $stmt = $conn->prepare("UPDATE paint_mini_store_balance SET status = ? WHERE item_code = ?");
     $stmt->bind_param("ss", $status, $item_code);
 
     if ($stmt55->execute()) {
         // Redirect after successful update
-        header('Location: ../../../main_store/store/stock.php');
+        header('Location: ../../../paint_mini_Store/store/stock.php');
         exit();
     } else {
         // Handle error before any output
@@ -174,9 +206,3 @@ if (isset($_POST['delete_stock_item'])) {
     $stmt->close();
     $conn->close();
 }
-
-
-
-
-
-

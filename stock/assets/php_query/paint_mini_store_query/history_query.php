@@ -35,9 +35,9 @@ if (isset($_POST['save_report'])) {
             SUM(msh.stock_out) AS total_stock_out,
             msb.balance AS current_balance
         FROM 
-            main_store_history msh
+            paint_mini_store_history msh
         LEFT JOIN 
-            main_store_balance msb ON msh.item_code = msb.item_code
+            paint_mini_store_balance msb ON msh.item_code = msb.item_code
         WHERE 
             msh.saved_date = ?
         GROUP BY 
@@ -50,7 +50,7 @@ if (isset($_POST['save_report'])) {
     $result = mysqli_stmt_get_result($stmt);
 
     if ($result && mysqli_num_rows($result) > 0) {
-        $insert_sql = "INSERT INTO main_store_report (item_code, stock_in, stock_out, balance, saved_by, saved_date) VALUES (?, ?, ?, ?, ?, ?)";
+        $insert_sql = "INSERT INTO paint_mini_store_report (item_code, stock_in, stock_out, balance, saved_by, saved_date) VALUES (?, ?, ?, ?, ?, ?)";
         $insert_stmt = mysqli_prepare($conn, $insert_sql);
 
         while ($row = mysqli_fetch_assoc($result)) {
@@ -73,21 +73,21 @@ if (isset($_POST['save_report'])) {
         echo "Report saved successfully for date: $report_date";
 
         // Update status to 'inactive' for the same date
-        $update_sql = "UPDATE main_store_request SET status = 'inactive' WHERE requested_date = ?";
+        $update_sql = "UPDATE paint_main_Store_request SET status = 'inactive' WHERE requested_date = ?";
         $update_stmt = mysqli_prepare($conn, $update_sql);
         mysqli_stmt_bind_param($update_stmt, "s", $report_date);
 
         if (mysqli_stmt_execute($update_stmt)) {
-             header('Location: ../../../main_store/store/history.php');
+             header('Location: ../../../paint_main_store/store/history.php');
             
             exit();
           
         } else {
-            echo " Failed to update status in main_store_history: " . mysqli_stmt_error($update_stmt);
+            echo " Failed to update status in paint_mini_store_history: " . mysqli_stmt_error($update_stmt);
         }
 
     } else {
-        echo "No data found in main_store_history for the given date.";
+        echo "No data found in paint_mini_store_history for the given date.";
     }
 }
 ?>

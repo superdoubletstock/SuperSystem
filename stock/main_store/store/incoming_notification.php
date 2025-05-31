@@ -27,13 +27,13 @@ $password = $_SESSION['password']; // Not recommended to show
 
 if ($sub_role == "paint_main") {
     $PAINT = "PAINT";
-    $val = "AND category = '$PAINT'";
+    $val = "AND i.category = '$PAINT'";
 } else if ($sub_role == "fiber_main") {
     $FIBER = "FIBER";
-    $val = "AND category = '$FIBER'";
+    $val = "AND i.category = '$FIBER'";
 } else if ($sub_role == "fixed_asset") {
     $FIXED_ASSET = "FIXED_ASSET";
-    $val = "AND category = '$fixed_asset'";
+    $val = "AND i.category = '$fixed_asset'";
 } else if ($sub_role == "admin") {
     $val = "";  // No category filter for admin
 } else {
@@ -165,9 +165,16 @@ if ($sub_role == "paint_main") {
 
                     </li>
                     <li class="sub-menu">
-                        <a class="active" href="request.php">
+                        <a href="request.php">
                             <i class="fa fa-book"></i>
                             <span>Request</span>
+                        </a>
+
+                    </li>
+                    <li class="sub-menu">
+                        <a class="active" href="incoming_notification.php">
+                            <i class="fa fa-book"></i>
+                            <span>Incoming Notification</span>
                         </a>
 
                     </li>
@@ -203,32 +210,110 @@ if ($sub_role == "paint_main") {
             <section class="wrapper">
                 <div class="row">
                     <div class="col-lg-12 main-chart">
-                        <h1>Main Store In request</h1>
+                        <h1>Multi-Store Alerts</h1>
                         <div class="row mt">
                             <div class="col-lg-12">
                                 <div class="content-panel">
                                     <?php
                                     include("connect.php");
+                                    // Run the UNION ALL query
+                                    $query = "
+SELECT 
+    pm.in_out,
+    pm.team2_accept,
+    pm.department,
+    pm.team1_accepet,
+    pm.qnty,
+    pm.transaction_id,
+    pm.requested_date,
+    pm.InFrom_OutTo,
+    pm.requested_by,
+    pm.in_out,
+    i.item_description,
+    i.item_code,
+    i.category,
+    i.uom,
+    'paint_mini_store_request' AS source_table
+FROM paint_mini_store_request pm
+INNER JOIN inventory_items i ON pm.item_code = i.item_code
+WHERE pm.department = 'main_store' AND pm.team1 = '1' AND pm.team2 = '1' $val
 
-                                    $main_store_query = "SELECT 
-                 main_store_request.In_out,
-                 main_store_request.team2_accept,
-                 main_store_request.department,
-               
-                 main_store_request.cancel,
-                 main_store_request.team1_accepet,
-                 main_store_request.qnty ,
-                 main_store_request.transaction_id,
-                 main_store_request.requested_date,
-                 main_store_request.InFrom_OutTo,
-                 main_store_request.requested_by,
-                 main_store_request.In_Out,
-                 main_store_request.team1,
-                 main_store_request.team2 ,
-                inventory_items.item_description AS item_description ,inventory_items.item_code AS item_code ,inventory_items.category AS category, inventory_items.uom AS uom
-                FROM main_store_request INNER JOIN inventory_items ON main_store_request.item_code = inventory_items.item_code where status='active' and cancel='0' $val";
-                                    $main_store_query_run = mysqli_query($conn, $main_store_query);
+UNION ALL
+
+SELECT 
+    fm.in_out,
+    fm.team2_accept,
+    fm.department,
+    fm.team1_accepet,
+    fm.qnty,
+    fm.transaction_id,
+    fm.requested_date,
+    fm.InFrom_OutTo,
+    fm.requested_by,
+    fm.in_out,
+    i.item_description,
+    i.item_code,
+    i.category,
+    i.uom,
+    'fiber_mini_store_request' AS source_table
+FROM fiber_mini_store_request fm
+INNER JOIN inventory_items i ON fm.item_code = i.item_code
+WHERE fm.department = 'main_store' AND fm.team1 = '1' AND fm.team2 = '1' $val
+
+UNION ALL
+
+SELECT 
+    pmm.in_out,
+    pmm.team2_accept,
+    pmm.department,
+    pmm.team1_accepet,
+    pmm.qnty,
+    pmm.transaction_id,
+    pmm.requested_date,
+    pmm.InFrom_OutTo,
+    pmm.requested_by,
+    pmm.in_out,
+    i.item_description,
+    i.item_code,
+    i.category,
+    i.uom,
+    'paint_mini_mini_store_request' AS source_table
+FROM paint_mini_mini_store_request pmm
+INNER JOIN inventory_items i ON pmm.item_code = i.item_code
+WHERE pmm.department = 'main_store' AND pmm.team1 = '1' AND pmm.team2 = '1' $val
+
+UNION ALL
+
+SELECT 
+    fmm.in_out,
+    fmm.team2_accept,
+    fmm.department,
+    fmm.team1_accepet,
+    fmm.qnty,
+    fmm.transaction_id,
+    fmm.requested_date,
+    fmm.InFrom_OutTo,
+    fmm.requested_by,
+    fmm.in_out,
+    i.item_description,
+    i.item_code,
+    i.category,
+    i.uom,
+    'fiber_mini_mini_store_request' AS source_table
+FROM fiber_mini_mini_store_request fmm
+INNER JOIN inventory_items i ON fmm.item_code = i.item_code
+WHERE fmm.department = 'main_store' AND fmm.team1 = '1' AND fmm.team2 = '1' $val
+";
+
+                                    // Execute the query
+                                    $main_store_query_run = mysqli_query($conn, $query);
+
+                                    // Fetch all results into an array
                                     $main_store_query_run_data = mysqli_fetch_all($main_store_query_run, MYSQLI_ASSOC);
+
+
+
+
                                     ?>
                                     <input type="text" id="RequestsearchInput" class="form-control"
                                         placeholder="Search for departments..."
@@ -252,127 +337,65 @@ if ($sub_role == "paint_main") {
                                                     <th>Item Code</th>
                                                     <th>Item Description</th>
                                                     <th>category</th>
-                                                    <th>Department</th>
+                                                    <!-- <th>Department</th> -->
                                                     <th>UOM</th>
                                                     <th>In/Out</th>
                                                     <th>Qnty</th>
                                                     <th>Requested By</th>
                                                     <th>Requested Date</th>
                                                     <th>Remark</th>
-                                                    <?php
-                                                    if ($role == "admin") {
-                                                    ?>
-                                                        <th colspan="2" style="text-align: center;">Accepted By</th>
-                                                    <?php
-                                                    }
-                                                    ?>
+                                                    <th>Requesting Department</th>
 
-
-                                                    <th colspan="4" style="text-align: center;">Action</th>
+                                                    <th colspan="1" style="text-align: center;">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php foreach ($main_store_query_run_data as $request): ?>
                                                     <tr class="attendanceRow">
-                                                        <td><?= $request['transaction_id']; ?></td>
-                                                        <td><?= $request['item_code']; ?></td>
-
-                                                        <td><?= $request['item_description']; ?></td>
-
-                                                        <td><?= $request['category']; ?></td>
-                                                        <td><?= $request['department']; ?></td>
-                                                        <td><?= $request['uom']; ?></td>
-                                                        <td><?= $request['In_Out']; ?></td>
-                                                        <td><?= $request['qnty']; ?></td>
-                                                        <td><?= $request['requested_by']; ?></td>
-                                                        <td><?= $request['requested_date']; ?></td>
-                                                        <td><?= $request['InFrom_OutTo']; ?></td>
-
-                                
-                                                        <?php
-
-                                                        if ($role == "team1") {
-
-                                                            $team1 = $request['team1'];
-                                                            $team2 = $request['team2'];
-                                                            if ($team1 == 1 || $team1 == 2) {
-
-
-                                                        ?>
-                                                                <td>
-                                                                    <button class="btn btn-success acceptRequestBtn"
-                                                                        data-toggle="modal" data-target="#AcceptRequestModal"
-                                                                        data-id="<?php echo $request['transaction_id']; ?>"
-                                                                        disabled>accept</button>
-                                                                </td>
-                                                                <td>
-                                                                    <button class="btn btn-danger rejectRequestBtn"
-                                                                        data-toggle="modal" data-target="#RejectRequestModal"
-                                                                        data-id="<?php echo $request['transaction_id']; ?>"
-                                                                        disabled>Reject</button>
-                                                                </td>
-                                                            <?php
-                                                            } else if ($team1 == 0 || $team2 == 0) {
-                                                            ?>
-                                                                <td>
-                                                                    <button class="btn btn-success acceptRequestBtn"
-                                                                        data-toggle="modal" data-target="#AcceptRequestModal"
-                                                                        data-id="<?php echo $request['transaction_id']; ?>">accept</button>
-                                                                </td>
-                                                                <td>
-                                                                    <button class="btn btn-danger rejectRequestBtn"
-                                                                        data-toggle="modal" data-target="#RejectRequestModal"
-                                                                        data-id="<?php echo $request['transaction_id']; ?>">Reject</button>
-                                                                </td>
-                                                            <?php
-                                                            }
-                                                            ?>
-                                                            <?php
-                                                        } else if ($role == "team2") {
-                                                            $team1 = $request['team1'];
-                                                            $team2 = $request['team2'];
-                                                            if ($team2 == 1 || $team2 == 2) {
-
-                                                            ?>
-                                                                <td>
-                                                                    <button class="btn btn-success acceptRequestBtn"
-                                                                        data-toggle="modal" data-target="#AcceptRequestModal"
-                                                                        data-id="<?php echo $request['transaction_id']; ?>"
-                                                                        disabled>accept</button>
-                                                                </td>
-                                                                <td>
-                                                                    <button class="btn btn-danger rejectRequestBtn"
-                                                                        data-toggle="modal" data-target="#RejectRequestModal"
-                                                                        data-id="<?php echo $request['transaction_id']; ?>"
-                                                                        disabled>Reject</button>
-                                                                </td>
-                                                            <?php
-                                                            } else if ($team1 == 0 || $team2 == 0) {
-                                                            ?>
-                                                                <td>
-                                                                    <button class="btn btn-success acceptRequestBtn"
-                                                                        data-toggle="modal" data-target="#AcceptRequestModal"
-                                                                        data-id="<?php echo $request['transaction_id']; ?>">accept</button>
-                                                                </td>
-                                                                <td>
-                                                                    <button class="btn btn-danger rejectRequestBtn"
-                                                                        data-toggle="modal" data-target="#RejectRequestModal"
-                                                                        data-id="<?php echo $request['transaction_id']; ?>">Reject</button>
-                                                                </td>
-                                                            <?php
-                                                            }
-                                                            ?>
-
-
+                                                        <td><?= htmlspecialchars($request['transaction_id']) ?></td>
+                                                        <td><?= htmlspecialchars($request['item_code']) ?></td>
+                                                        <td><?= htmlspecialchars($request['item_description']) ?></td>
+                                                        <td><?= htmlspecialchars($request['category']) ?></td>
+                                                        <!-- <td><?= htmlspecialchars($request['department']) ?></td> -->
+                                                        <td><?= htmlspecialchars($request['uom']) ?></td>
+                                                        <td><?= htmlspecialchars($request['in_out']) ?></td>
+                                                        <td><?= htmlspecialchars($request['qnty']) ?></td>
+                                                        <td><?= htmlspecialchars($request['requested_by']) ?></td>
+                                                        <td><?= htmlspecialchars($request['requested_date']) ?></td>
+                                                        <td><?= htmlspecialchars($request['InFrom_OutTo']) ?></td>
 
                                                         <?php
 
+                                                        $store = "UNKNOWN STORE"; // Default fallback
+                                                        if ($request['source_table'] == "paint_mini_store_request") {
+                                                            $store = "paint_mini_store";
+                                                        } else  if ($request['source_table'] == "fiber_mini_store_request") {
+                                                            $store = "fiber_mini_store";
+                                                        } else  if ($request['source_table'] == "paint_mini_mini_store_request") {
+                                                            $store = "paint_mini_mini_store";
+                                                        } else  if ($request['source_table'] == "fiber_mini_mini_store_request") {
+                                                            $store = "fiber_mini_mini_store";
                                                         }
-
                                                         ?>
 
+
+                                                        <td><?= htmlspecialchars($store) ?></td>
+
+                                                        <!-- Add empty Action columns if needed -->
+                                                        <!-- <td>
+                                                            <button class="btn btn-warning acceptRequestBtn"
+                                                                data-toggle="modal" data-target="#AcceptRequestModal"
+                                                                data-id="<?php echo $request['transaction_id']; ?>"
+                                                                disabled>Cancel</button>
+                                                        </td> -->
+                                                        <td>
+                                                            <button class="btn btn-primary forwardRequestBtn"
+                                                                data-toggle="modal" data-target="#ForwardRequestModal"
+                                                                data-id="<?php echo $request['transaction_id']; ?>">Forward</button>
+                                                        </td>
                                                     </tr>
                                                 <?php endforeach; ?>
+
 
                                             </tbody>
                                         </table>
@@ -425,74 +448,7 @@ if ($sub_role == "paint_main") {
                             </div>
                         </div>
                     </div>
-                    <!-- accept transaction for request table -->
 
-                    <div class="modal fade" id="AcceptRequestModal" tabindex="-1" role="dialog"
-                        aria-labelledby="acceptModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <form id="acceptForm" action="../../assets/php_query/main_store_query/request_query.php" method="post">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="acceptModalLabel">Accept Request</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-
-                                    <div class="modal-body" style="display: none;">
-                                        <input type="text" class="form-control mb-3" id="acceptItemCode"
-                                            name="acceptItemCode" placeholder="Item code" readonly>
-
-                                    </div>
-                                    <div class="modal-body" style="display: none;">
-                                        <input type="text" class="form-control mb-3" id="acceptItemCode2"
-                                            name="acceptItemCode2" placeholder="Item code" readonly>
-
-                                    </div>
-                                    <div class="modal-body">
-                                        <label for="" style="color:red; font-size:large;">make sure you check every
-                                            detail before accepting!! this acction can't be undone!!</label>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-success" name="accept_request">Confirm
-                                            Accept</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- reject transaction for request table -->
-                    <div class="modal fade" id="RejectRequestModal" tabindex="-1" role="dialog"
-                        aria-labelledby="acceptModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <form id="acceptForm" action="../../assets/php_query/main_store_query/request_query.php" method="post">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="acceptModalLabel">Reject Request</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-
-                                    <div class="modal-body" style="display: none;">
-                                        <input type="text" class="form-control mb-3" id="rejectItemCode"
-                                            name="rejectItemCode" placeholder="Item code" readonly>
-
-                                    </div>
-                                    <div class="modal-body">
-                                        <label for="" style="color:red; font-size:large;">make sure you check every
-                                            detail before Rejecting!! this acction can't be undone!!</label>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-success" name="reject_request">Confirm
-                                            Accept</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- we will add forward function here -->
                     <div class="modal fade" id="ForwardRequestModal" tabindex="-1" role="dialog"
@@ -506,20 +462,51 @@ if ($sub_role == "paint_main") {
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
+                                   
+                                    <div class="modal-body" style="display: none;">
+                                        <input type="text" class="form-control mb-3" id="ForwardTransactionID"
+                                            name="ForwardTransactionID" placeholder="transaction Id" readonly>
+
+                                    </div>
+                                     <div class="modal-body" style="display: none;">
+                                        <input type="text" class="form-control mb-3" id="requsted_by"
+                                            name="requsted_by" value="<?= $fullname ?>"  readonly>
+
+                                    </div>
+
+
 
                                     <div class="modal-body" style="display: none;">
-                                        <input type="text" class="form-control mb-3" id="rejectItemCode"
-                                            name="rejectItemCode" placeholder="Item code" readonly>
+                                        <input type="text" class="form-control mb-3" id="FrowardItemCode"
+                                            name="FrowardItemCode" placeholder="Item code" readonly>
 
                                     </div>
-                                    <div class="modal-body">
-                                        <label for="" style="color:red; font-size:large;">make sure you check every
-                                            detail before forward!! this acction can't be undone!!</label>
+
+                                       <div class="modal-body" style="display: none;">
+                                        <input type="text" class="form-control mb-3" id="ForwardQnty"
+                                            name="ForwardQnty" placeholder="forwarded item qnty" readonly>
+
                                     </div>
+
+                                       <div class="modal-body" style="display: none;">
+                                        <input type="text" class="form-control mb-3" id="requestng_department"
+                                            name="requestng_department" placeholder="requestng_department" readonly>
+
+                                    </div>
+
+                                    
+                                    <div class="modal-body" style="display: block;">
+
+                                    <label for="" style="color:red; font-size:large;">whats the reason for the request?</label>
+                                        <input type="text" class="form-control mb-3" id="remark"
+                                            name="remark" placeholder="remark" required>
+
+                                    </div>
+
 
                                     <div class="modal-footer">
                                         <button type="submit" class="btn btn-success" name="forward_request">Confirm
-                                            Accept</button>
+                                            Forward</button>
                                     </div>
                                 </form>
                             </div>
@@ -721,28 +708,20 @@ if ($sub_role == "paint_main") {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Cancel button
-            $('.deleteRequestBtn').click(function() {
-                var transactionId = $(this).data('id');
-                $('#deleteDepartmentId').val(transactionId);
-            });
 
-            // Accept button
-            $('.acceptRequestBtn').click(function() {
-                var transactionId = $(this).data('id');
-                $('#acceptItemCode').val(transactionId);
-                // Find the second column text in the same row as the clicked button
-                var secondColumnData = $(this).closest('tr').find('td:eq(1)').text().trim();
-                $('#acceptItemCode2').val(secondColumnData);
-            });
 
-            //reject buutton
-            $('.rejectRequestBtn').click(function() {
+            //forward buutton
+            $('.forwardRequestBtn').click(function() {
                 var transactionId = $(this).data('id');
-                $('#rejectItemCode').val(transactionId);
+                $('#ForwardTransactionID').val(transactionId);
                 // Find the second column data in the same row as the clicked button
                 var secondColumnData = $(this).closest('tr').find('td:eq(1)').text().trim();
-                $('#rejectItemCode2').val(secondColumnData);
+                $('#FrowardItemCode').val(secondColumnData);
+                  var sixthColumnData = $(this).closest('tr').find('td:eq(6)').text().trim();
+                $('#ForwardQnty').val(sixthColumnData);
+
+                  var tenthColumnData = $(this).closest('tr').find('td:eq(10)').text().trim();
+                $('#requestng_department').val(tenthColumnData);
             });
 
         });

@@ -66,13 +66,13 @@ if (isset($_POST['login'])) {
         header("Location: stock/main_store/team1/dashboard.php?timeout=1");
         exit;
       }else if ($user['department'] == "paint_mini_store" && $user['role'] == "admin" && $user['sub_role'] == "admin") { // this means nati!! paint mini store
-        header("Location: stock/paint_mini_store/team1/dashboard.php?timeout=1");
+        header("Location: stock/paint_mini_store/store/dashboard.php?timeout=1");
         exit;
       } else if ($user['department'] == "paint_mini_store" && $user['role'] == "team1" && $user['sub_role'] == "paint_mini") { // this means yesmaw!!paint mini store
         header("Location: stock/paint_mini_store/team1/dashboard.php?timeout=1");
         exit;
       } else if ($user['department'] == "paint_mini_store" && $user['role'] == "team2" && $user['sub_role'] == "paint_mini") { // this means ketema!! paint mini store
-        header("Location: stock/paint_mini_store/team1/dashboard.php?timeout=1");
+        header("Location: stock/paint_mini_store/team2/dashboard.php?timeout=1");
         exit;
       }
 

@@ -203,19 +203,35 @@ if ($sub_role == "paint_main") {
             <section class="wrapper">
                 <div class="row">
                     <div class="col-lg-12 main-chart">
-                        <h1>Main Store In request</h1>
+                        <h1>Paint Mini Store In request</h1>
                         <div class="row mt">
                             <div class="col-lg-12">
                                 <div class="content-panel">
                                     <?php
                                     include("connect.php");
 
-                                    $main_store_query = "SELECT 
-                 main_store_request.In_out,main_store_request.team2_accept,main_store_request.department,main_store_request.status_temp,main_store_request.cancel,main_store_request.team1_accepet,main_store_request.qnty ,main_store_request.transaction_id,main_store_request.requested_date,main_store_request.InFrom_OutTo,main_store_request.requested_by,main_store_request.In_Out,main_store_request.team1,main_store_request.team2 ,
-                inventory_items.item_description AS item_description ,inventory_items.item_code AS item_code ,inventory_items.category AS category, inventory_items.uom AS uom
-                FROM main_store_request INNER JOIN inventory_items ON main_store_request.item_code = inventory_items.item_code where status='active' and cancel='0' $val";
-                                    $main_store_query_run = mysqli_query($conn, $main_store_query);
-                                    $main_store_query_run_data = mysqli_fetch_all($main_store_query_run, MYSQLI_ASSOC);
+                                    $pmt1_store_query = "SELECT 
+                 paint_mini_store_request.In_out,
+                 paint_mini_store_request.team2_accept,
+                 paint_mini_store_request.department,
+                 
+                 paint_mini_store_request.cancel,
+                 paint_mini_store_request.team1_accepet,
+                 paint_mini_store_request.qnty ,
+                 paint_mini_store_request.transaction_id,
+                 paint_mini_store_request.requested_date,
+                 paint_mini_store_request.InFrom_OutTo,
+                 paint_mini_store_request.requested_by,
+                 paint_mini_store_request.In_Out,
+                 paint_mini_store_request.team1,
+                 paint_mini_store_request.team2 ,
+                inventory_items.item_description AS item_description ,
+                inventory_items.item_code AS item_code ,
+                inventory_items.category AS category,
+                 inventory_items.uom AS uom
+                FROM paint_mini_store_request INNER JOIN inventory_items ON paint_mini_store_request.item_code = inventory_items.item_code where status='active' and cancel='0' $val";
+                                    $pmt1_store_query_run = mysqli_query($conn, $pmt1_store_query);
+                                    $pmt1_store_query_run_data = mysqli_fetch_all($pmt1_store_query_run, MYSQLI_ASSOC);
                                     ?>
                                     <input type="text" id="RequestsearchInput" class="form-control"
                                         placeholder="Search for departments..."
@@ -259,7 +275,7 @@ if ($sub_role == "paint_main") {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php foreach ($main_store_query_run_data as $request): ?>
+                                                <?php foreach ($pmt1_store_query_run_data as $request): ?>
                                                     <tr class="attendanceRow">
                                                         <td><?= $request['transaction_id']; ?></td>
                                                         <td><?= $request['item_code']; ?></td>
@@ -378,47 +394,14 @@ if ($sub_role == "paint_main") {
 
                     </div>
 
-                    <!-- cancel transaction  Modal request table -->
-                    <div class="modal fade" id="deleteRequestmodal" tabindex="-1" role="dialog"
-                        aria-labelledby="deleteModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <form id="deleteForm" action="../../assets/php_query/main_store_query/request_query.php" method="post">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteModalLabel">Cancel Request</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class=" col-md-12 form-group" style="display: none;">
-                                        <input type="text" class="form-control" id="deleteDepartmentId"
-                                            name="deleteDepartmentId" placeholder="Enter employee id">
-
-                                    </div>
-                                    <div class="col-md-12 form-group">
-                                        <label for="remark"> Why Do You want To Cancel It?</label>
-                                        <input type="text" class="form-control" id="remark" name="remark"
-                                            placeholder="This action can't be undone!!" required>
-                                    </div>
-
-
-                                    <div class="modal-footer">
-                                        <button class="btn btn-danger deleteEmpBtn" data-toggle="modal"
-                                            data-target="#deleteEmpModal" name="delete_stock_item"
-                                            data-id="1">Confirm</button>
-                                    </div>
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
+             
                     <!-- accept transaction for request table -->
 
                     <div class="modal fade" id="AcceptRequestModal" tabindex="-1" role="dialog"
                         aria-labelledby="acceptModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
-                                <form id="acceptForm" action="../../assets/php_query/main_store_query/request_query.php" method="post">
+                                <form id="acceptForm" action="../../assets/php_query/paint_mini_store_query/request_query.php" method="post">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="acceptModalLabel">Accept Request</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -454,7 +437,7 @@ if ($sub_role == "paint_main") {
                         aria-labelledby="acceptModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
-                                <form id="acceptForm" action="../../assets/php_query/main_store_query/request_query.php" method="post">
+                                <form id="acceptForm" action="../../assets/php_query/paint_mini_store_query/request_query.php" method="post">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="acceptModalLabel">Reject Request</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -474,38 +457,6 @@ if ($sub_role == "paint_main") {
 
                                     <div class="modal-footer">
                                         <button type="submit" class="btn btn-success" name="reject_request">Confirm
-                                            Accept</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- we will add forward function here -->
-                    <div class="modal fade" id="ForwardRequestModal" tabindex="-1" role="dialog"
-                        aria-labelledby="acceptModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <form id="acceptForm" action="../../assets/php_query/main_store_query/request_query.php" method="post">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="acceptModalLabel">Forward Request</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-
-                                    <div class="modal-body" style="display: none;">
-                                        <input type="text" class="form-control mb-3" id="rejectItemCode"
-                                            name="rejectItemCode" placeholder="Item code" readonly>
-
-                                    </div>
-                                    <div class="modal-body">
-                                        <label for="" style="color:red; font-size:large;">make sure you check every
-                                            detail before forward!! this acction can't be undone!!</label>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-success" name="forward_request">Confirm
                                             Accept</button>
                                     </div>
                                 </form>

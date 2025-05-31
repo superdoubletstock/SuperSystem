@@ -66,7 +66,7 @@ if ($sub_role == "paint_main") {
     <!-- Custom styles for this template -->
     <link href="../../assets/css/style.css" rel="stylesheet">
     <link href="../../assets/css/style-responsive.css" rel="stylesheet">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 </head>
 
@@ -83,10 +83,10 @@ if ($sub_role == "paint_main") {
             </div>
             <!--logo start-->
             <a href="index.html" class="logo"><b>SDT</b></a>
-        <div class="nav notify-row" id="top_menu">
+            <div class="nav notify-row" id="top_menu">
                 <!--  notification start -->
-         
-        <h2 id="trust" style="
+
+                <h2 id="trust" style="
      
             margin: 0;
             font-size: 26px;
@@ -97,13 +97,13 @@ if ($sub_role == "paint_main") {
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         ">
-           <span style="opacity:0">---------</span> We trust in God !!  <span style="opacity:0">-----------------------------------</span> እግዚአብሔር  ይባረክ !!
+                    <span style="opacity:0">---------</span> We trust in God !! <span style="opacity:0">-----------------------------------</span> እግዚአብሔር ይባረክ !!
 
-        </h2>
-        
-  
+                </h2>
+
+
             </div>
-          
+
             <div class="top-menu">
                 <ul class="nav pull-right top-menu">
                     <li><a class="logout" href="../../../index.php">Logout</a></li>
@@ -123,24 +123,24 @@ if ($sub_role == "paint_main") {
 
                     <p class="centered"><a href="profile.html"><img src="../../assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
                     <h5 class="centered"><?php echo $fullname; ?></h5>
-     <?php
+                    <?php
                     if ($role == "administrator") {
 
                     ?>
                         <!-- Go back to home page icon (using Font Awesome) -->
                         <li class="mt">
                             <a href="../../SuperAdmin/dashboard.php" title="Go to Home Page" style="text-decoration: none;">
-                            <i class="fas fa-home" style="font-size: 24px; margin-left: 10px;"></i>
-                             <span>Admin Home Page</span>
-                        </a>
+                                <i class="fas fa-home" style="font-size: 24px; margin-left: 10px;"></i>
+                                <span>Admin Home Page</span>
+                            </a>
                         </li>
 
 
                     <?php
                     }
                     ?>
-                  <li class="mt">
-                        <a  href="dashboard.php">
+                    <li class="mt">
+                        <a href="dashboard.php">
                             <i class="fa fa-dashboard"></i>
                             <span>Dashboard</span>
                         </a>
@@ -162,7 +162,7 @@ if ($sub_role == "paint_main") {
                     </li>
 
                     <li class="sub-menu">
-                        <a  href="history.php">
+                        <a href="history.php">
                             <i class="fa fa-book"></i>
                             <span>History</span>
                         </a>
@@ -193,91 +193,86 @@ if ($sub_role == "paint_main") {
 
                 <div class="row">
                     <div class="col-lg-12 main-chart">
-                      
-                      
-  <h1>Main Store Report</h1>
-    <div class="row mt">
-        <div class="col-lg-12">
-            <div class="content-panel">
 
-                <?php
-                include("connect.php");
-                $main_store_query = "SELECT 
-                    main_store_report.item_code, main_store_report.stock_in, main_store_report.stock_out, 
-                    main_store_report.balance, main_store_report.saved_by, main_store_report.saved_date,
+
+                        <h1>Paint Mini Store Report</h1>
+                        <div class="row mt">
+                            <div class="col-lg-12">
+                                <div class="content-panel">
+
+                                    <?php
+                                    include("connect.php");
+                                    $pm_store_query = "SELECT 
+                    paint_mini_store_report.item_code, paint_mini_store_report.stock_in, paint_mini_store_report.stock_out, 
+                    paint_mini_store_report.balance, paint_mini_store_report.saved_by, paint_mini_store_report.saved_date,
                     inventory_items.item_description AS item_description,
                     inventory_items.category AS category, inventory_items.uom AS uom
-                    FROM main_store_report 
-                    INNER JOIN inventory_items ON main_store_report.item_code = inventory_items.item_code $val";
-                
-                $main_store_query_run = mysqli_query($conn, $main_store_query);
-                $main_store_query_run_data = mysqli_fetch_all($main_store_query_run, MYSQLI_ASSOC);
-                ?>
+                    FROM paint_mini_store_report 
+                    INNER JOIN inventory_items ON paint_mini_store_report.item_code = inventory_items.item_code $val";
 
-                <input type="text" id="ReportSearchInput" class="form-control" placeholder="Search for History..." style="margin-bottom: 10px; margin-right: 3%; width: 250px; float: right;">
+                                    $pm_store_query_run = mysqli_query($conn, $pm_store_query);
+                                    $pm_store_query_run_data = mysqli_fetch_all($pm_store_query_run, MYSQLI_ASSOC);
+                                    ?>
 
-                <a href="#" class="btn btn-success text-white" id="exportBtn" style="float: right; margin-right: 10px;">
-                    <span>Export</span>
-                </a>
-                <a href="#" class="btn btn-info text-white" id="printBtn" style="float: right; margin-right: 10px;">
-                    <span>Print</span>
-                </a>
+                                    <input type="text" id="ReportSearchInput" class="form-control" placeholder="Search for History..." style="margin-bottom: 10px; margin-right: 3%; width: 250px; float: right;">
 
-                <section id="unseen">
-                    <table class="table table-bordered table-striped table-condensed" id="reportTable" style="table-layout: auto;">
-                        <thead>
-                            <tr>
-                                <th>R.NO</th>
-                                <th>Item Code</th>
-                                <th>Item Description</th>
-                                <th>UOM</th>
-                                <th>Category</th>
-                                <th>Stock In</th>
-                                <th>Stock Out</th>
-                                <th>Balance</th>
-                                <th>Prepared By</th>
-                                <th>Saved Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($main_store_query_run_data as $request): ?>
-                                <tr class="reportRow">
-                                 <td><?= $request['report_id']; ?></td>
-                                  
-                                    <td><?= $request['item_code']; ?></td>
-                                    <td><?= $request['item_description']; ?></td>
-                                    <td><?= $request['uom']; ?></td>
-                                    <td><?= $request['category']; ?></td>
-                                    <td><?= $request['stock_in']; ?></td>
-                                    <td><?= $request['stock_out']; ?></td>
-                                    <td><?= $request['balance']; ?></td>
-                                    <td><?= $request['saved_by']; ?></td>
-                                    <td><?= $request['saved_date']; ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </section>
+                                    <a href="#" class="btn btn-success text-white" id="exportBtn" style="float: right; margin-right: 10px;">
+                                        <span>Export</span>
+                                    </a>
+                                    <a href="#" class="btn btn-info text-white" id="printBtn" style="float: right; margin-right: 10px;">
+                                        <span>Print</span>
+                                    </a>
 
-                <div id="paginationControls">
-                    <button id="reportprevBtn" class="btn btn-primary">Previous</button>
-                    <button id="reportnextBtn" class="btn btn-primary">Next</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                                    <section id="unseen">
+                                        <table class="table table-bordered table-striped table-condensed" id="reportTable" style="table-layout: auto;">
+                                            <thead>
+                                                <tr>
+                                                    <th>R.NO</th>
+                                                    <th>Item Code</th>
+                                                    <th>Item Description</th>
+                                                    <th>UOM</th>
+                                                    <th>Category</th>
+                                                    <th>Stock In</th>
+                                                    <th>Stock Out</th>
+                                                    <th>Balance</th>
+                                                    <th>Prepared By</th>
+                                                    <th>Saved Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($pm_store_query_run_data as $request): ?>
+                                                    <tr class="reportRow">
+                                                        <td><?= $request['report_id']; ?></td>
 
+                                                        <td><?= $request['item_code']; ?></td>
+                                                        <td><?= $request['item_description']; ?></td>
+                                                        <td><?= $request['uom']; ?></td>
+                                                        <td><?= $request['category']; ?></td>
+                                                        <td><?= $request['stock_in']; ?></td>
+                                                        <td><?= $request['stock_out']; ?></td>
+                                                        <td><?= $request['balance']; ?></td>
+                                                        <td><?= $request['saved_by']; ?></td>
+                                                        <td><?= $request['saved_date']; ?></td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
+                                    </section>
 
-
-
-
-
-                     
+                                    <div id="paginationControls">
+                                        <button id="reportprevBtn" class="btn btn-primary">Previous</button>
+                                        <button id="reportnextBtn" class="btn btn-primary">Next</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    </div><!-- /col-lg-3 -->
+
+
                 </div>
-              
+                </div><!-- /col-lg-3 -->
+                </div>
+
             </section>
         </section>
 
@@ -285,7 +280,7 @@ if ($sub_role == "paint_main") {
         <!--footer start-->
         <footer class="site-footer">
             <div class="text-center">
-            © 2025 Super Double T General Trading Plc.
+                © 2025 Super Double T General Trading Plc.
                 <a href="#" class="go-top">
                     <i class="fa fa-angle-up"></i>
                 </a>
@@ -314,144 +309,146 @@ if ($sub_role == "paint_main") {
     <script src="../../assets/js/sparkline-chart.js"></script>
     <script src="../../assets/js/zabuto_calendar.js"></script>
 
-   
-<script>
-    const rowsPerPage = 10;
-    let currentPage = 1;
-    let allReportRows = [];
 
-    const reportTableBody = document.querySelector('#reportTable tbody');
-    const reportSearchInput = document.getElementById('ReportSearchInput');
-    const reportPrevBtn = document.getElementById('reportprevBtn');
-    const reportNextBtn = document.getElementById('reportnextBtn');
-    const exportBtn = document.getElementById('exportBtn');
-    const printBtn = document.getElementById('printBtn');
+    <script>
+        const rowsPerPage = 10;
+        let currentPage = 1;
+        let allReportRows = [];
 
-    function loadOriginalReportRows() {
-        const rows = document.querySelectorAll('#reportTable tbody tr');
-        allReportRows = Array.from(rows).map(row => row.innerHTML);
-    }
+        const reportTableBody = document.querySelector('#reportTable tbody');
+        const reportSearchInput = document.getElementById('ReportSearchInput');
+        const reportPrevBtn = document.getElementById('reportprevBtn');
+        const reportNextBtn = document.getElementById('reportnextBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const printBtn = document.getElementById('printBtn');
 
-    function getFilteredReportRows() {
-        const searchTerm = reportSearchInput.value.toLowerCase();
-        return allReportRows.filter(rowHTML => rowHTML.toLowerCase().includes(searchTerm));
-    }
+        function loadOriginalReportRows() {
+            const rows = document.querySelectorAll('#reportTable tbody tr');
+            allReportRows = Array.from(rows).map(row => row.innerHTML);
+        }
 
-    function renderReportTable(filteredRows) {
-        const start = (currentPage - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        const rowsToDisplay = filteredRows.slice(start, end);
+        function getFilteredReportRows() {
+            const searchTerm = reportSearchInput.value.toLowerCase();
+            return allReportRows.filter(rowHTML => rowHTML.toLowerCase().includes(searchTerm));
+        }
 
-        reportTableBody.innerHTML = '';
-        rowsToDisplay.forEach((rowHTML, index) => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = rowHTML;
-            tr.children[0].textContent = start + index + 1; // R.NO
-            reportTableBody.appendChild(tr);
-        });
+        function renderReportTable(filteredRows) {
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const rowsToDisplay = filteredRows.slice(start, end);
 
-        reportPrevBtn.disabled = currentPage === 1;
-        reportNextBtn.disabled = currentPage >= Math.ceil(filteredRows.length / rowsPerPage);
-    }
+            reportTableBody.innerHTML = '';
+            rowsToDisplay.forEach((rowHTML, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = rowHTML;
+                tr.children[0].textContent = start + index + 1; // R.NO
+                reportTableBody.appendChild(tr);
+            });
 
-    function updateReportTable() {
-        const filteredRows = getFilteredReportRows();
-        if (currentPage > Math.ceil(filteredRows.length / rowsPerPage)) {
+            reportPrevBtn.disabled = currentPage === 1;
+            reportNextBtn.disabled = currentPage >= Math.ceil(filteredRows.length / rowsPerPage);
+        }
+
+        function updateReportTable() {
+            const filteredRows = getFilteredReportRows();
+            if (currentPage > Math.ceil(filteredRows.length / rowsPerPage)) {
+                currentPage = 1;
+            }
+            renderReportTable(filteredRows);
+        }
+
+        reportSearchInput.addEventListener('input', () => {
             currentPage = 1;
-        }
-        renderReportTable(filteredRows);
-    }
-
-    reportSearchInput.addEventListener('input', () => {
-        currentPage = 1;
-        updateReportTable();
-    });
-
-    reportPrevBtn.addEventListener('click', () => {
-        if (currentPage > 1) {
-            currentPage--;
             updateReportTable();
-        }
-    });
-
-    reportNextBtn.addEventListener('click', () => {
-        currentPage++;
-        updateReportTable();
-    });
-
-    printBtn.addEventListener('click', () => {
-        const visibleRows = document.querySelectorAll('#reportTable tbody tr');
-
-        let tableHTML = '<table border="1" style="width: 100%; border-collapse: collapse;">';
-        tableHTML += '<thead><tr><th>R.NO</th><th>Item Code</th><th>Item Description</th><th>UOM</th><th>Category</th><th>Stock In</th><th>Stock Out</th><th>Balance</th><th>Requested By</th><th>Saved Date</th></tr></thead><tbody>';
-
-        visibleRows.forEach((row, index) => {
-            const cells = row.querySelectorAll('td');
-            tableHTML += '<tr>';
-            tableHTML += `<td>${index + 1}</td>`;
-            for (let i = 1; i < cells.length; i++) {
-                tableHTML += `<td>${cells[i].textContent.trim()}</td>`;
-            }
-            tableHTML += '</tr>';
         });
 
-        tableHTML += '</tbody></table>';
+        reportPrevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                updateReportTable();
+            }
+        });
 
-        const printWindow = window.open('', '', 'height=600,width=800');
-        printWindow.document.write('<html><head><title>Print Report</title></head><body>');
-        printWindow.document.write('<h1 style="text-align: center;">WE TRUST IN GOD</h1>');
-        printWindow.document.write('<h2 style="text-align: center;">Super double T General Trading Plc</h2><br>');
-         printWindow.document.write('<h4 style="text-align: center;">Daily Report</h4><br>');
-        printWindow.document.write(tableHTML);
-        printWindow.document.write('</body></html>');
-        printWindow.document.close();
-        printWindow.print();
-    });
+        reportNextBtn.addEventListener('click', () => {
+            currentPage++;
+            updateReportTable();
+        });
 
-    exportBtn.addEventListener('click', () => {
-        const visibleRows = document.querySelectorAll('#reportTable tbody tr');
-        
-        let csvContent = 'WE TRUST IN GOD\nSuper double T General Trading Plc\n\n';
-        csvContent += 'R.NO,Item Code,Item Description,UOM,Category,Stock In,Stock Out,Balance,Prepared By,Saved Date\n';
+        printBtn.addEventListener('click', () => {
+            const visibleRows = document.querySelectorAll('#reportTable tbody tr');
 
-        visibleRows.forEach((row, index) => {
-            const cells = row.querySelectorAll('td');
-            const rowData = [index + 1]; // R.NO
+            let tableHTML = '<table border="1" style="width: 100%; border-collapse: collapse;">';
+            tableHTML += '<thead><tr><th>R.NO</th><th>Item Code</th><th>Item Description</th><th>UOM</th><th>Category</th><th>Stock In</th><th>Stock Out</th><th>Balance</th><th>Requested By</th><th>Saved Date</th></tr></thead><tbody>';
 
-            for (let i = 1; i < cells.length; i++) {
-                let cellText = cells[i].textContent.trim();
+            visibleRows.forEach((row, index) => {
+                const cells = row.querySelectorAll('td');
+                tableHTML += '<tr>';
+                tableHTML += `<td>${index + 1}</td>`;
+                for (let i = 1; i < cells.length; i++) {
+                    tableHTML += `<td>${cells[i].textContent.trim()}</td>`;
+                }
+                tableHTML += '</tr>';
+            });
 
-                if (i === 9) {
-                    const date = new Date(cellText);
-                    if (!isNaN(date.getTime())) {
-                        cellText = date.toISOString().split('T')[0];
+            tableHTML += '</tbody></table>';
+
+            const printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write('<html><head><title>Print Report</title></head><body>');
+            printWindow.document.write('<h1 style="text-align: center;">WE TRUST IN GOD</h1>');
+            printWindow.document.write('<h2 style="text-align: center;">Super double T General Trading Plc</h2><br>');
+            printWindow.document.write('<h4 style="text-align: center;">Daily Report</h4><br>');
+            printWindow.document.write(tableHTML);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        });
+
+        exportBtn.addEventListener('click', () => {
+            const visibleRows = document.querySelectorAll('#reportTable tbody tr');
+
+            let csvContent = 'WE TRUST IN GOD\nSuper double T General Trading Plc\n\n';
+            csvContent += 'R.NO,Item Code,Item Description,UOM,Category,Stock In,Stock Out,Balance,Prepared By,Saved Date\n';
+
+            visibleRows.forEach((row, index) => {
+                const cells = row.querySelectorAll('td');
+                const rowData = [index + 1]; // R.NO
+
+                for (let i = 1; i < cells.length; i++) {
+                    let cellText = cells[i].textContent.trim();
+
+                    if (i === 9) {
+                        const date = new Date(cellText);
+                        if (!isNaN(date.getTime())) {
+                            cellText = date.toISOString().split('T')[0];
+                        }
                     }
+
+                    if (cellText.includes(',') || cellText.includes('"')) {
+                        cellText = `"${cellText.replace(/"/g, '""')}"`;
+                    }
+
+                    rowData.push(cellText);
                 }
 
-                if (cellText.includes(',') || cellText.includes('"')) {
-                    cellText = `"${cellText.replace(/"/g, '""')}"`;
-                }
+                csvContent += rowData.join(',') + '\n';
+            });
 
-                rowData.push(cellText);
-            }
-
-            csvContent += rowData.join(',') + '\n';
+            const blob = new Blob([csvContent], {
+                type: 'text/csv;charset=utf-8;'
+            });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'report.csv';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         });
 
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'report.csv';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-        loadOriginalReportRows();
-        updateReportTable();
-    });
-</script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadOriginalReportRows();
+            updateReportTable();
+        });
+    </script>
 
 </body>
 

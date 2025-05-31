@@ -203,7 +203,7 @@ if ($sub_role == "paint_main") {
             <section class="wrapper">
                 <div class="row">
                     <div class="col-lg-12 main-chart">
-                        <h1>Main Store In request</h1>
+                        <h1>Paint Mini Store In request</h1>
                         <div class="row mt">
                             <div class="col-lg-12">
                                 <div class="content-panel">
@@ -211,9 +211,23 @@ if ($sub_role == "paint_main") {
                                     include("connect.php");
 
                                     $main_store_query = "SELECT 
-                 main_store_request.In_out,main_store_request.team2_accept,main_store_request.department,main_store_request.status_temp,main_store_request.cancel,main_store_request.team1_accepet,main_store_request.qnty ,main_store_request.transaction_id,main_store_request.requested_date,main_store_request.InFrom_OutTo,main_store_request.requested_by,main_store_request.In_Out,main_store_request.team1,main_store_request.team2 ,
-                inventory_items.item_description AS item_description ,inventory_items.item_code AS item_code ,inventory_items.category AS category, inventory_items.uom AS uom
-                FROM main_store_request INNER JOIN inventory_items ON main_store_request.item_code = inventory_items.item_code where status='active' and cancel='0' $val";
+                 paint_mini_store_request.In_out,
+                 paint_mini_store_request.team2_accept,
+                 paint_mini_store_request.department,
+                 paint_mini_store_request.cancel,
+                 paint_mini_store_request.team1_accepet,
+                 paint_mini_store_request.qnty ,
+                 paint_mini_store_request.transaction_id,
+                 paint_mini_store_request.requested_date,
+                 paint_mini_store_request.InFrom_OutTo,
+                 paint_mini_store_request.requested_by,
+                 paint_mini_store_request.In_Out,
+                 paint_mini_store_request.team1,
+                 paint_mini_store_request.team2 ,
+                inventory_items.item_description AS item_description ,
+                inventory_items.item_code AS item_code ,inventory_items.category AS category,
+                 inventory_items.uom AS uom
+                FROM paint_mini_store_request INNER JOIN inventory_items ON paint_mini_store_request.item_code = inventory_items.item_code where status='active' and cancel='0' $val";
                                     $main_store_query_run = mysqli_query($conn, $main_store_query);
                                     $main_store_query_run_data = mysqli_fetch_all($main_store_query_run, MYSQLI_ASSOC);
                                     ?>
@@ -303,11 +317,31 @@ if ($sub_role == "paint_main") {
                                                         </td>
 
 
-                                                   <td>
+                                                      <?php 
+                                                       
+                                                        if($request['team1']==1 && $request['team1']==1){
+                                                            ?>
+                                                             <td>
                                                                 <button class="btn btn-warning deleteRequestBtn"
                                                                     data-toggle="modal" data-target="#deleteRequestmodal"
-                                                                    data-id="<?php echo $request['transaction_id']; ?>">Cancel</button>
+                                                                    data-id="<?php echo $request['transaction_id']; ?>" disabled>Cancel</button>
                                                             </td>
+
+                                                            <?php
+                                                        }else{
+
+                                                              ?>
+                                                             <td>
+                                                                <button class="btn btn-warning deleteRequestBtn"
+                                                                    data-toggle="modal" data-target="#deleteRequestmodal"
+                                                                    data-id="<?php echo $request['transaction_id']; ?>" >Cancel</button>
+                                                            </td>
+
+                                                            <?php
+
+                                                        }
+                                                        
+                                                        ?>
                                                    
 
 
@@ -337,7 +371,7 @@ if ($sub_role == "paint_main") {
                         aria-labelledby="deleteModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
-                                <form id="deleteForm" action="../../assets/php_query/main_store_query/request_query.php" method="post">
+                                <form id="deleteForm" action="../../assets/php_query/paint_mini_store_query/request_query.php" method="post">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="deleteModalLabel">Cancel Request</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -366,107 +400,7 @@ if ($sub_role == "paint_main") {
                             </div>
                         </div>
                     </div>
-                    <!-- accept transaction for request table -->
-
-                    <div class="modal fade" id="AcceptRequestModal" tabindex="-1" role="dialog"
-                        aria-labelledby="acceptModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <form id="acceptForm" action="../../assets/php_query/main_store_query/request_query.php" method="post">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="acceptModalLabel">Accept Request</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-
-                                    <div class="modal-body" style="display: none;">
-                                        <input type="text" class="form-control mb-3" id="acceptItemCode"
-                                            name="acceptItemCode" placeholder="Item code" readonly>
-
-                                    </div>
-                                    <div class="modal-body" style="display: none;">
-                                        <input type="text" class="form-control mb-3" id="acceptItemCode2"
-                                            name="acceptItemCode2" placeholder="Item code" readonly>
-
-                                    </div>
-                                    <div class="modal-body">
-                                        <label for="" style="color:red; font-size:large;">make sure you check every
-                                            detail before accepting!! this acction can't be undone!!</label>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-success" name="accept_request">Confirm
-                                            Accept</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- reject transaction for request table -->
-                    <div class="modal fade" id="RejectRequestModal" tabindex="-1" role="dialog"
-                        aria-labelledby="acceptModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <form id="acceptForm" action="../../assets/php_query/main_store_query/request_query.php" method="post">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="acceptModalLabel">Reject Request</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-
-                                    <div class="modal-body" style="display: none;">
-                                        <input type="text" class="form-control mb-3" id="rejectItemCode"
-                                            name="rejectItemCode" placeholder="Item code" readonly>
-
-                                    </div>
-                                    <div class="modal-body">
-                                        <label for="" style="color:red; font-size:large;">make sure you check every
-                                            detail before Rejecting!! this acction can't be undone!!</label>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-success" name="reject_request">Confirm
-                                            Accept</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- we will add forward function here -->
-                    <!-- <div class="modal fade" id="ForwardRequestModal" tabindex="-1" role="dialog"
-                        aria-labelledby="acceptModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <form id="acceptForm" action="../../assets/php_query/main_store_query/request_query.php" method="post">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="acceptModalLabel">Forward Request</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-
-                                    <div class="modal-body" style="display: none;">
-                                        <input type="text" class="form-control mb-3" id="rejectItemCode"
-                                            name="rejectItemCode" placeholder="Item code" readonly>
-
-                                    </div>
-                                    <div class="modal-body">
-                                        <label for="" style="color:red; font-size:large;">make sure you check every
-                                            detail before forward!! this acction can't be undone!!</label>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-success" name="forward_request">Confirm
-                                            Accept</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div> -->
-
+             
                 </div>
                 </div><!-- /col-lg-3 -->
                 </div>

@@ -110,7 +110,7 @@ if (isset($_POST['StockOut'])) {
         echo "the item already exist in db";
     }
 
-    // ***************************balance_query+
+    // ***************************balance_query********************************************
     $main_store_request = "INSERT INTO main_store_request(item_code,team1,team2,department,requested_by,qnty,In_Out,InFrom_OutTo,status,cancel) 
     VALUES ('$item_code','$pending','$pending','$department','$received_by','$qnty','$In_Out','$remark','$status','$cancel')";
     // Execute the query

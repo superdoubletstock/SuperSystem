@@ -106,11 +106,7 @@ if ($sub_role == "paint_main") {
             </div>
         </header>
         <!--header end-->
-
-        <!-- **********************************************************************************************************************************************************
-      MAIN SIDEBAR MENU
-      *********************************************************************************************************************************************************** -->
-        <!--sidebar start-->
+<!--sidebar start-->
         <aside>
             <div id="sidebar" class="nav-collapse ">
                 <!-- sidebar menu start-->
@@ -185,7 +181,7 @@ if ($sub_role == "paint_main") {
             <section class="wrapper">
                 <div class="row">
                     <div class="col-lg-12 main-chart">
-                        <h1>Main Store Stock Balance</h1>
+                        <h1>Paint Mini Store Stock Balance</h1>
                         <div class="row mt">
                             <div class="col-lg-12">
                                 <div class="content-panel">
@@ -213,12 +209,12 @@ if ($sub_role == "paint_main") {
 
                                     <?php
                                     include("connect.php");
-                                    $dashboard_query = "SELECT 
-                main_store_balance.balance,
+                                    $pmt1_stock_query = "SELECT 
+                paint_mini_store_balance.balance,
                 inventory_items.item_description AS item_description ,inventory_items.item_code AS item_code ,inventory_items.category AS category, inventory_items.uom AS uom,inventory_items.origin AS origin
-                FROM main_store_balance INNER JOIN inventory_items ON main_store_balance.item_code = inventory_items.item_code WHERE status='active' $val ";
-                                    $dashboard_run = mysqli_query($conn, $dashboard_query);
-                                    $dashboard_data = mysqli_fetch_all($dashboard_run, MYSQLI_ASSOC);
+                FROM paint_mini_store_balance INNER JOIN inventory_items ON paint_mini_store_balance.item_code = inventory_items.item_code WHERE status='active' $val ";
+                                    $pmt1_run = mysqli_query($conn, $pmt1_stock_query);
+                                    $pmt1_data = mysqli_fetch_all($pmt1_run, MYSQLI_ASSOC);
                                     ?>
                                     <section id="unseen">
                                         <table class="table table-bordered table-striped table-condensed" id="StockTable" style="table-layout: auto;">
@@ -234,7 +230,7 @@ if ($sub_role == "paint_main") {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php foreach ($dashboard_data as $request): ?>
+                                                <?php foreach ($pmt1_data as $request): ?>
 
                                                     <tr class="attendanceRow">
                                                         <td><?= $request['item_code']; ?></td>
@@ -263,161 +259,7 @@ if ($sub_role == "paint_main") {
                                 </div>
                             </div>
                         </div>
-                        <!-- stock in -->
-                        <div class="modal fade" id="StockINModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document" style="width: 30%;">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="addModalLabel">STOCK IN</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form id="addForm" action="../../assets/php_query/main_store_query/stock_query.php" method="POST" enctype="multipart/form-data">
-                                            <div class="row">
-                                                <?php
-                                                include('connect.php');
-                                                $inventory_sql = "SELECT item_code, item_description, uom FROM inventory_items $val";
-                                                $result = $conn->query($inventory_sql);
-                                                ?>
-
-                                                <div class="col-md-12 form-group">
-                                                    <label for="inventorySelect">Inventory</label>
-                                                    <select class="form-control" id="inventorySelect" name="inventorySelect" required>
-                                                        <option value="" disabled selected>Select Item</option>
-                                                        <?php
-                                                        if ($result->num_rows > 0) {
-                                                            while ($row = $result->fetch_assoc()) {
-                                                                echo "<option value='" . $row['item_code'] . "'>" . $row['item_description'] . " - " . $row['uom'] . "</option>";
-                                                            }
-                                                        } else {
-                                                            echo "<option value='' disabled>No items available</option>";
-                                                        }
-                                                        ?>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-6 form-group">
-                                                    <label for="Qnty">QNTY</label>
-                                                    <input type="number" class="form-control" id="Qnty" name="Qnty"
-                                                        placeholder="Enter Qnty" required>
-                                                </div>
-                                                <div class="col-md-6 form-group">
-                                                    <label for="Recived_by">Recived By</label>
-                                                    <input type="text" class="form-control" id="Recived_by" name="Recived_by"
-                                                        placeholder="Enter full name" required value="<?php echo $fullname ?>" readonly>
-                                                </div>
-
-                                                <div class="col-md-12 form-group">
-                                                    <label for="Recived_by">Department</label>
-                                                    <select class="form-control" id="department" name="department" required>
-                                                        <option value="" disabled selected>Select </option>
-                                                        <option value="main_store">MAIN STORE</option>
-                                                        <option value="fiber_mini_Store">FIBER MINI STORE</option>
-                                                        <option value="paint_mini_store">PAINT MINI STORE</option>
-                                                        <option value="fiber_mini_mini_store">FIBER MINI-MINI STORE</option>
-                                                        <option value="paint_mini_mini_store">PAINT MINI-MINI STORE</option>
-                                                        <!-- Add more departments as needed -->
-                                                    </select>
-                                                </div>
-
-
-                                                <div class="col-md-12 form-group">
-                                                    <label for="remark"> Stock In Remark</label>
-                                                    <input type="text" class="form-control" id="remark" name="remark"
-                                                        placeholder="Enter Remark" required>
-                                                </div>
-                                            </div>
-
-                                            <!-- Submit Button -->
-                                            <button type="submit" class="btn btn-primary " name="StockIn">Send</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- stock out -->
-
-                        <div class="modal fade" id="StockOUTModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document" style="width: 30%;">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="addModalLabel">STOCK OUT</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form id="addForm" action="../../assets/php_query/main_store_query/stock_query.php" method="POST" enctype="multipart/form-data">
-                                            <div class="row">
-                                                <?php
-                                                include('connect.php');
-                                                $inventory_sql = "SELECT item_code, item_description, uom FROM inventory_items $val";
-                                                $result = $conn->query($inventory_sql);
-                                                ?>
-
-                                                <div class="col-md-12 form-group">
-                                                    <label for="inventorySelect">Inventory</label>
-                                                    <select class="form-control" id="inventorySelect" name="inventorySelect" required>
-                                                        <option value="" disabled selected>Select Item</option>
-                                                        <?php
-                                                        if ($result->num_rows > 0) {
-                                                            while ($row = $result->fetch_assoc()) {
-                                                                echo "<option value='" . $row['item_code'] . "'>" . $row['item_description'] . " - " . $row['uom'] . "</option>";
-                                                            }
-                                                        } else {
-                                                            echo "<option value='' disabled>No items available</option>";
-                                                        }
-                                                        ?>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-6 form-group">
-                                                    <label for="qnty">QNTY</label>
-                                                    <input type="number" class="form-control" id="qnty" name="Qnty"
-                                                        placeholder="Enter Qnty" required>
-                                                </div>
-                                                <div class="col-md-6 form-group">
-                                                    <label for="received_by">Requested By</label>
-                                                    <input type="text" class="form-control" id="Received_by" name="Received_by"
-                                                        placeholder="Enter Remark" required value="<?php echo $fullname ?>" readonly>
-                                                </div>
-
-                                                <div class="col-md-12 form-group">
-                                                    <label for="Recived_by">Department</label>
-                                                    <select class="form-control" id="department" name="department" required>
-                                                        <option value="" disabled selected>Select </option>
-                                                        <option value="main_store">MAIN STORE</option>
-                                                        <option value="sales">SALES</option>
-                                                        <option value="fiber_mini_Store">FIBER MINI STORE</option>
-                                                        <option value="paint_mini_store">PAINT MINI STORE</option>
-                                                        <option value="fiber_mini_mini_store">FIBER MINI-MINI STORE</option>
-                                                        <option value="paint_mini_mini_store">PAINT MINI-MINI STORE</option>
-                                                        <option value="others">OTHERS</option>
-                                                        <!-- Add more departments as needed -->
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-12 form-group">
-                                                    <label for="remark"> Stock Out Remark</label>
-                                                    <input type="text" class="form-control" id="remark" name="remark"
-                                                        placeholder="Enter full name" required>
-                                                </div>
-                                            </div>
-
-                                            <!-- Submit Button -->
-                                            <button type="submit" class="btn btn-primary " name="StockOut">Send</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-
-
-
-
+    
 
                     </div>
                 </div><!-- /col-lg-3 -->
@@ -447,7 +289,6 @@ if ($sub_role == "paint_main") {
     <script src="../../assets/js/jquery.scrollTo.min.js"></script>
     <script src="../../assets/js/jquery.nicescroll.js" type="text/javascript"></script>
     <script src="../../assets/js/jquery.sparkline.js"></script>
-
 
     <!--common script for all pages-->
     <script src="../../assets/js/common-scripts.js"></script>

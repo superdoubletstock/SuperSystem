@@ -24,28 +24,21 @@ $role = $_SESSION['role'];
 $sub_role = $_SESSION['sub_role'];
 $phone = $_SESSION['phonenumber'];
 $password = $_SESSION['password']; // Not recommended to show
-// if ($sub_role == "paint_mini" || $sub_role == "admin") {
-//   $PAINT="PAINT";
-//     $val = "AND category = '$PAINT'";
-// }
-// else {
-//     $val = "";  // Default/fallback behavior
-//  }
 
-// if ($sub_role == "paint_main") {
-//     $PAINT="PAINT";
-//     $val = "AND category = '$PAINT'";
-// } else if ($sub_role == "fiber_main") {
-//     $FIBER="FIBER";
-//     $val = "AND category = '$FIBER'";
-// } else if ($sub_role == "fixed_asset") {
-//     $FIXED_ASSET="FIXED_ASSET";
-//     $val = "AND category = '$fixed_asset'";
-// } else if ($sub_role == "admin") {
-//     $val = "";  // No category filter for admin
-// } else {
-//     $val = "";  // Default/fallback behavior
-// }
+if ($sub_role == "paint_main") {
+    $PAINT="PAINT";
+    $val = "AND category = '$PAINT'";
+} else if ($sub_role == "fiber_main") {
+    $FIBER="FIBER";
+    $val = "AND category = '$FIBER'";
+} else if ($sub_role == "fixed_asset") {
+    $FIXED_ASSET="FIXED_ASSET";
+    $val = "AND category = '$fixed_asset'";
+} else if ($sub_role == "admin") {
+    $val = "";  // No category filter for admin
+} else {
+    $val = "";  // Default/fallback behavior
+}
 ?>
 
 <!DOCTYPE html>
@@ -179,6 +172,9 @@ $password = $_SESSION['password']; // Not recommended to show
 
                     </li>
 
+
+
+
                 </ul>
                 <!-- sidebar menu end-->
             </div>
@@ -189,20 +185,16 @@ $password = $_SESSION['password']; // Not recommended to show
             <section class="wrapper">
                 <div class="row">
                     <div class="col-lg-12 main-chart">
-                        <h1>Paint Mini Store Stock Balance</h1>
+                        <h1>Main Store Stock Balance</h1>
                         <div class="row mt">
                             <div class="col-lg-12">
                                 <div class="content-panel">
                                     <!-- Search Bar -->
 
-                         <input type="text" id="historySearchInput" class="form-control" placeholder="Search for History..." style="margin-bottom: 10px; margin-right: 3%; width: 250px; float: right;">
+                                    <input type="text" id="StocksearchInput" class="form-control" placeholder="Search for departments..."
+                                        style="margin-bottom: 10px; margin-right: 3%; width: 250px; float: right;"
+                                        placeholder="Search for departments...">
 
-                                    <a href="#" class="btn btn-success text-white" id="historyExportBtn" style="float: right; margin-right: 10px;">
-                                        <span>Export</span>
-                                    </a>
-                                    <a href="#" class="btn btn-info text-white" id="historyPrintBtn" style="float: right; margin-right: 10px;">
-                                        <span>Print</span>
-                                    </a>
 
                                     <?php
 
@@ -220,17 +212,16 @@ $password = $_SESSION['password']; // Not recommended to show
                                     ?>
 
                                     <?php
-                               
                                     include("connect.php");
                                     $dashboard_query = "SELECT 
-                paint_mini_store_balance.balance,
+                main_store_balance.balance,
                 inventory_items.item_description AS item_description ,inventory_items.item_code AS item_code ,inventory_items.category AS category, inventory_items.uom AS uom,inventory_items.origin AS origin
-                FROM paint_mini_store_balance INNER JOIN inventory_items ON paint_mini_store_balance.item_code = inventory_items.item_code WHERE status='active'";
+                FROM main_store_balance INNER JOIN inventory_items ON main_store_balance.item_code = inventory_items.item_code WHERE status='active' $val ";
                                     $dashboard_run = mysqli_query($conn, $dashboard_query);
                                     $dashboard_data = mysqli_fetch_all($dashboard_run, MYSQLI_ASSOC);
                                     ?>
                                     <section id="unseen">
-                                        <table class="table table-bordered table-striped table-condensed" id="StockTables" style="table-layout: auto;">
+                                        <table class="table table-bordered table-striped table-condensed" id="StockTable" style="table-layout: auto;">
                                             <thead>
                                                 <tr>
                                                     <th>Item Code</th>
@@ -265,9 +256,9 @@ $password = $_SESSION['password']; // Not recommended to show
                                         </table>
                                     </section>
                                     <!-- Pagination Controls -->
-                                   <div id="historyPaginationControls">
-                                        <button id="historyPrevBtn" class="btn btn-primary">Previous</button>
-                                        <button id="historyNextBtn" class="btn btn-primary">Next</button>
+                                    <div id="paginationControls">
+                                        <button id="StockprevBtn" class="btn btn-primary">Previous</button>
+                                        <button id="StocknextBtn" class="btn btn-primary">Next</button>
                                     </div>
                                 </div>
                             </div>
@@ -283,12 +274,11 @@ $password = $_SESSION['password']; // Not recommended to show
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="addForm" action="../../assets/php_query/paint_mini_store_query/stock_query.php" method="POST" enctype="multipart/form-data">
+                                        <form id="addForm" action="../../assets/php_query/main_store_query/stock_query.php" method="POST" enctype="multipart/form-data">
                                             <div class="row">
                                                 <?php
-                                                $category="PAINT";
                                                 include('connect.php');
-                                                $inventory_sql = "SELECT item_code, item_description, uom FROM inventory_items WHERE category='$category'";
+                                                $inventory_sql = "SELECT item_code, item_description, uom FROM inventory_items $val";
                                                 $result = $conn->query($inventory_sql);
                                                 ?>
 
@@ -324,10 +314,10 @@ $password = $_SESSION['password']; // Not recommended to show
                                                     <select class="form-control" id="department" name="department" required>
                                                         <option value="" disabled selected>Select </option>
                                                         <option value="main_store">MAIN STORE</option>
-                                                        <option value="fiber_mini_Store" disabled>FIBER MINI STORE</option>
-                                                        <option value="paint_mini_store" disabled>PAINT MINI STORE</option>
-                                                        <option value="fiber_mini_mini_store" disabled>FIBER MINI-MINI STORE</option>
-                                                        <option value="paint_mini_mini_store" disabled>PAINT MINI-MINI STORE</option>
+                                                        <option value="fiber_mini_Store">FIBER MINI STORE</option>
+                                                        <option value="paint_mini_store">PAINT MINI STORE</option>
+                                                        <option value="fiber_mini_mini_store">FIBER MINI-MINI STORE</option>
+                                                        <option value="paint_mini_mini_store">PAINT MINI-MINI STORE</option>
                                                         <!-- Add more departments as needed -->
                                                     </select>
                                                 </div>
@@ -359,12 +349,11 @@ $password = $_SESSION['password']; // Not recommended to show
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="addForm" action="../../assets/php_query/paint_mini_store_query/stock_query.php" method="POST" enctype="multipart/form-data">
+                                        <form id="addForm" action="../../assets/php_query/main_store_query/stock_query.php" method="POST" enctype="multipart/form-data">
                                             <div class="row">
                                                 <?php
-                                                 $category="PAINT";
                                                 include('connect.php');
-                                                $inventory_sql = "SELECT item_code, item_description, uom FROM inventory_items WHERE category='$category'";
+                                                $inventory_sql = "SELECT item_code, item_description, uom FROM inventory_items $val";
                                                 $result = $conn->query($inventory_sql);
                                                 ?>
 
@@ -398,14 +387,13 @@ $password = $_SESSION['password']; // Not recommended to show
                                                     <label for="Recived_by">Department</label>
                                                     <select class="form-control" id="department" name="department" required>
                                                         <option value="" disabled selected>Select </option>
-                                                        <option value="paint_mini_mini_store" >PAINT MINI-MINI STORE</option>
-                                                        <option value="main_store" disabled>MAIN STORE</option>
-                                                        <option value="sales" disabled>SALES</option>
-                                                        <option value="fiber_mini_Store" disabled>FIBER MINI STORE</option>
-                                                        <option value="paint_mini_store" disabled>PAINT MINI STORE</option>
-                                                        <option value="fiber_mini_mini_store" disabled>FIBER MINI-MINI STORE</option>
-                                                        
-                                                        <option value="others" disabled>OTHERS</option>
+                                                        <option value="main_store">MAIN STORE</option>
+                                                        <option value="sales">SALES</option>
+                                                        <option value="fiber_mini_Store">FIBER MINI STORE</option>
+                                                        <option value="paint_mini_store">PAINT MINI STORE</option>
+                                                        <option value="fiber_mini_mini_store">FIBER MINI-MINI STORE</option>
+                                                        <option value="paint_mini_mini_store">PAINT MINI-MINI STORE</option>
+                                                        <option value="others">OTHERS</option>
                                                         <!-- Add more departments as needed -->
                                                     </select>
                                                 </div>
@@ -423,6 +411,12 @@ $password = $_SESSION['password']; // Not recommended to show
                                 </div>
                             </div>
                         </div>
+
+
+
+
+
+
 
 
                     </div>
@@ -466,134 +460,80 @@ $password = $_SESSION['password']; // Not recommended to show
     <script src="../../assets/js/zabuto_calendar.js"></script>
 
     <!-- pagnation and search bar Employe table -->
-      <script>
-        const hist_rowsPerPage = 10;
-        let hist_currentPage = 1;
-        let hist_allRows = Array.from(document.querySelectorAll('#StockTables tbody tr'));
-        let hist_filteredRows = [...hist_allRows];
+    <script>
+        const EmpRowsPerPage = 9; // Number of rows per page
+        let EmpCurrentPage = 1;
+        let EmpAllRows = Array.from(document.querySelectorAll('#StockTable tbody tr')); // All rows in the table
+        let EmpFilteredRows = [...EmpAllRows]; // Start with all rows being the filtered set
 
-        const hist_table = document.getElementById('StockTables');
-        const hist_tbody = hist_table.querySelector('tbody');
-        const hist_searchInput = document.getElementById('historySearchInput');
-        const hist_prevBtn = document.getElementById('historyPrevBtn');
-        const hist_nextBtn = document.getElementById('historyNextBtn');
-        const hist_exportBtn = document.getElementById('historyExportBtn');
-        const hist_printBtn = document.getElementById('historyPrintBtn');
+        const EmpTable = document.getElementById('StockTable');
+        const EmpTbody = EmpTable.querySelector('tbody');
+        const EmpSearchInput = document.getElementById('StocksearchInput');
+        const EmpPrevBtn = document.getElementById('StockprevBtn');
+        const EmpNextBtn = document.getElementById('StocknextBtn');
 
-        function hist_updatePaginationButtons() {
-            const totalPages = Math.ceil(hist_filteredRows.length / hist_rowsPerPage);
-            hist_prevBtn.disabled = hist_currentPage === 1;
-            hist_nextBtn.disabled = hist_currentPage === totalPages;
+        function EmpUpdatePaginationButtons() {
+            const EmpTotalPages = Math.ceil(EmpFilteredRows.length / EmpRowsPerPage);
+            EmpPrevBtn.disabled = EmpCurrentPage === 1;
+            EmpNextBtn.disabled = EmpCurrentPage === EmpTotalPages;
         }
 
-        function hist_getPageData(page) {
-            const startIndex = (page - 1) * hist_rowsPerPage;
-            const endIndex = page * hist_rowsPerPage;
-            return hist_filteredRows.slice(startIndex, endIndex);
+        function EmpGetPageData(EmpPage) {
+            const EmpStartIndex = (EmpPage - 1) * EmpRowsPerPage;
+            const EmpEndIndex = EmpPage * EmpRowsPerPage;
+            return EmpFilteredRows.slice(EmpStartIndex, EmpEndIndex);
         }
 
-     
+        function EmpDisplayTable(EmpRowsToDisplay) {
+            EmpTbody.innerHTML = ''; // Clear the table body
+            EmpRowsToDisplay.forEach(EmpRow => {
+                EmpTbody.appendChild(EmpRow);
+            });
+        }
 
-        function hist_handleSearch() {
-            const searchTerm = hist_searchInput.value.toLowerCase();
-            hist_filteredRows = hist_allRows.filter(row =>
-                Array.from(row.cells).some(cell =>
-                    cell.textContent.toLowerCase().includes(searchTerm)
+        function EmpHandleSearch() {
+            const EmpSearchTerm = EmpSearchInput.value.toLowerCase();
+
+            // Filter all rows based on the content of any cell in each row
+            EmpFilteredRows = EmpAllRows.filter(EmpRow =>
+                Array.from(EmpRow.cells).some(EmpCell =>
+                    EmpCell.textContent.toLowerCase().includes(EmpSearchTerm)
                 )
             );
-            hist_currentPage = 1;
-            hist_displayTable(hist_getPageData(hist_currentPage));
-            hist_updatePaginationButtons();
+
+            // Reset to the first page after a new search
+            EmpCurrentPage = 1;
+            EmpDisplayTable(EmpGetPageData(EmpCurrentPage));
+            EmpUpdatePaginationButtons();
         }
 
-        hist_prevBtn.addEventListener('click', () => {
-            if (hist_currentPage > 1) {
-                hist_currentPage--;
-                hist_displayTable(hist_getPageData(hist_currentPage));
-                hist_updatePaginationButtons();
+        EmpPrevBtn.addEventListener('click', () => {
+            if (EmpCurrentPage > 1) {
+                EmpCurrentPage--;
+                const EmpPageData = EmpGetPageData(EmpCurrentPage);
+                EmpDisplayTable(EmpPageData);
+                EmpUpdatePaginationButtons();
             }
         });
 
-        hist_nextBtn.addEventListener('click', () => {
-            const totalPages = Math.ceil(hist_filteredRows.length / hist_rowsPerPage);
-            if (hist_currentPage < totalPages) {
-                hist_currentPage++;
-                hist_displayTable(hist_getPageData(hist_currentPage));
-                hist_updatePaginationButtons();
+        EmpNextBtn.addEventListener('click', () => {
+            const EmpTotalPages = Math.ceil(EmpFilteredRows.length / EmpRowsPerPage);
+            if (EmpCurrentPage < EmpTotalPages) {
+                EmpCurrentPage++;
+                const EmpPageData = EmpGetPageData(EmpCurrentPage);
+                EmpDisplayTable(EmpPageData);
+                EmpUpdatePaginationButtons();
             }
         });
 
-        hist_searchInput.addEventListener('input', hist_handleSearch);
+        EmpSearchInput.addEventListener('input', EmpHandleSearch);
 
-        // Print Button
-        hist_printBtn.addEventListener('click', () => {
-            console.log('Print button clicked');
-            const visibleRows = document.querySelectorAll('#StockTables tbody tr');
-
-            let tableHTML = '<table border="1" style="width: 100%; border-collapse: collapse;">';
-            tableHTML += '<thead><tr><th>R.NO</th><th>Item Code</th><th>Item Description</th><th>UOM</th><th>Category</th><th>Stock In</th><th>Stock Out</th><th>Balance</th><th>Requested By</th><th>Accepted 1</th><th>Accepted 2</th><th>Date</th></tr></thead><tbody>';
-
-            visibleRows.forEach((row, index) => {
-                const cells = row.querySelectorAll('td');
-                tableHTML += '<tr>';
-                tableHTML += `<td>${index + 1}</td>`;
-                for (let i = 1; i < cells.length; i++) {
-                    tableHTML += `<td>${cells[i].textContent.trim()}</td>`;
-                }
-                tableHTML += '</tr>';
-            });
-
-            tableHTML += '</tbody></table>';
-
-            const printWindow = window.open('', '', 'height=600,width=800');
-            printWindow.document.write('<html><head><title>Print Report</title></head><body>');
-            printWindow.document.write('<h1 style="text-align: center;">WE TRUST IN GOD</h1>');
-            printWindow.document.write('<h2 style="text-align: center;">Super double T General Trading Plc</h2><br>');
-            printWindow.document.write('<h4 style="text-align: center;">Transaction History</h4><br>');
-            printWindow.document.write(tableHTML);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            printWindow.print();
-        });
-
-        // Export Button
-        hist_exportBtn.addEventListener('click', () => {
-            console.log('Export button clicked');
-            const visibleRows = document.querySelectorAll('#StockTables tbody tr');
-
-            let csvContent = 'WE TRUST IN GOD\nSuper double T General Trading Plc\n\n';
-            csvContent += 'R.NO,Item Code,Item Description,UOM,Category,Stock In,Stock Out,Balance,Requested By,Accepted 1,Accepted 2,Date\n';
-
-            visibleRows.forEach((row, index) => {
-                const cells = row.querySelectorAll('td');
-                const rowData = [index + 1];
-
-                for (let i = 1; i < cells.length; i++) {
-                    let cellText = cells[i].textContent.trim();
-                    if (cellText.includes(',') || cellText.includes('"')) {
-                        cellText = `"${cellText.replace(/"/g, '""')}"`;
-                    }
-                    rowData.push(cellText);
-                }
-
-                csvContent += rowData.join(',') + '\n';
-            });
-
-            const blob = new Blob([csvContent], {
-                type: 'text/csv;charset=utf-8;'
-            });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'history_report.csv';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
-
-        // Initial load
-        hist_displayTable(hist_getPageData(hist_currentPage));
-        hist_updatePaginationButtons();
+        // Initial table display
+        const EmpInitialData = EmpGetPageData(EmpCurrentPage);
+        EmpDisplayTable(EmpInitialData);
+        EmpUpdatePaginationButtons();
     </script>
+
 </body>
 
 </html>

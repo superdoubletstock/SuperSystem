@@ -155,6 +155,13 @@ if ($sub_role == "paint_main") {
                         </a>
 
                     </li>
+                       <li class="sub-menu">
+                        <a href="incoming_notification.php">
+                            <i class="fa fa-book"></i>
+                            <span>Incoming Notification</span>
+                        </a>
+
+                    </li>
 
                 
                     <li class="sub-menu">

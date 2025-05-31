@@ -288,3 +288,185 @@ ALTER TABLE `paint_mini_store_request`
 ALTER TABLE `paint_mini_store_request`
   ADD CONSTRAINT `fk_item_code` FOREIGN KEY (`item_code`) REFERENCES `inventory_items` (`item_code`);
 
+
+
+
+
+
+
+
+
+
+CREATE TABLE `fiber_mini_store_request` (
+  `item_code` varchar(200) NOT NULL,
+  `team1` varchar(100) DEFAULT NULL,
+  `team2` varchar(100) DEFAULT NULL,
+  `department` varchar(255) NOT NULL,
+  `requested_by` varchar(100) DEFAULT NULL,
+  `requested_date` date NOT NULL DEFAULT current_timestamp(),
+  `qnty` varchar(255) NOT NULL,
+  `In_Out` varchar(255) NOT NULL,
+  `InFrom_OutTo` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `transaction_id` int(100) NOT NULL,
+  `team1_accepet` varchar(255) NOT NULL,
+  `team2_accept` varchar(255) NOT NULL,
+  `cancel` int(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `fiber_mini_store_request`
+  ADD PRIMARY KEY (`transaction_id`),
+  ADD KEY `fk_item_code` (`item_code`);
+
+ALTER TABLE `fiber_mini_store_request`
+  MODIFY `transaction_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=330;
+
+ALTER TABLE `fiber_mini_store_request`
+  ADD CONSTRAINT `fk1_item_code` FOREIGN KEY (`item_code`) REFERENCES `inventory_items` (`item_code`);
+
+
+
+
+
+
+CREATE TABLE `paint_mini_mini_store_request` (
+  `item_code` varchar(200) NOT NULL,
+  `team1` varchar(100) DEFAULT NULL,
+  `team2` varchar(100) DEFAULT NULL,
+  `department` varchar(255) NOT NULL,
+  `requested_by` varchar(100) DEFAULT NULL,
+  `requested_date` date NOT NULL DEFAULT current_timestamp(),
+  `qnty` varchar(255) NOT NULL,
+  `In_Out` varchar(255) NOT NULL,
+  `InFrom_OutTo` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `transaction_id` int(100) NOT NULL,
+  `team1_accepet` varchar(255) NOT NULL,
+  `team2_accept` varchar(255) NOT NULL,
+  `cancel` int(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `paint_mini_mini_store_request`
+  ADD PRIMARY KEY (`transaction_id`),
+  ADD KEY `fk_item_code` (`item_code`);
+
+ALTER TABLE `paint_mini_mini_store_request`
+  MODIFY `transaction_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=330;
+
+ALTER TABLE `paint_mini_mini_store_request`
+  ADD CONSTRAINT `fk2_item_code` FOREIGN KEY (`item_code`) REFERENCES `inventory_items` (`item_code`);
+
+
+
+
+
+
+CREATE TABLE `fiber_mini_mini_store_request` (
+  `item_code` varchar(200) NOT NULL,
+  `team1` varchar(100) DEFAULT NULL,
+  `team2` varchar(100) DEFAULT NULL,
+  `department` varchar(255) NOT NULL,
+  `requested_by` varchar(100) DEFAULT NULL,
+  `requested_date` date NOT NULL DEFAULT current_timestamp(),
+  `qnty` varchar(255) NOT NULL,
+  `In_Out` varchar(255) NOT NULL,
+  `InFrom_OutTo` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `transaction_id` int(100) NOT NULL,
+  `team1_accepet` varchar(255) NOT NULL,
+  `team2_accept` varchar(255) NOT NULL,
+  `cancel` int(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `fiber_mini_mini_store_request`
+  ADD PRIMARY KEY (`transaction_id`),
+  ADD KEY `fk_item_code` (`item_code`);
+
+ALTER TABLE `fiber_mini_mini_store_request`
+  MODIFY `transaction_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=330;
+
+ALTER TABLE `fiber_mini_mini_store_request`
+  ADD CONSTRAINT `fk3_item_code` FOREIGN KEY (`item_code`) REFERENCES `inventory_items` (`item_code`);
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT * FROM paint_mini_store_request WHERE department='main_store' and team1='1' and team2='1' UNION ALL
+
+SELECT * FROM fiber_mini_store_request WHERE department='main_store' and team1='1' and team2='1' UNION ALL
+
+SELECT * FROM paint_mini_mini_store_request WHERE department='main_store' and team1='1' and team2='1' UNION ALL
+
+SELECT * FROM fiber_mini_mini_store_request WHERE department='main_store' and team1='1' and team2='1' 
+
+
+
+
+
+
+
+  <div class="content-panel">
+                                    <?php
+                                    include("connect.php");
+
+                                 
+SELECT * FROM paint_mini_store_request WHERE department='main_store' and team1='1' and team2='1' UNION ALL
+
+SELECT * FROM fiber_mini_store_request WHERE department='main_store' and team1='1' and team2='1' UNION ALL
+
+SELECT * FROM paint_mini_mini_store_request WHERE department='main_store' and team1='1' and team2='1' UNION ALL
+
+SELECT * FROM fiber_mini_mini_store_request WHERE department='main_store' and team1='1' and team2='1' 
+
+
+
+                                  
+
+                                    <section id="unseen">
+                                        <table class="table table-bordered table-striped table-condensed"
+                                            id="RequestTable" style="table-layout:auto">
+                                            <thead>
+                                                <tr>
+                                                    <th>Transaction ID</th>
+                                                    <th>Item Code</th>
+                                                    <th>Item Description</th>
+                                                    <th>category</th>
+                                                    <th>Department</th>
+                                                    <th>UOM</th>
+                                                    <th>In/Out</th>
+                                                    <th>Qnty</th>
+                                                    <th>Requested By</th>
+                                                    <th>Requested Date</th>
+                                                    <th>Remark</th>
+                                          
+                                                    <th colspan="4" style="text-align: center;">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($main_store_query_run_data as $request): ?>
+                                                    <tr class="attendanceRow">
+                                                      
+                                               
+
+                                                 
+                                                   
+
+
+
+                                                    </tr>
+                                                <?php endforeach; ?>
+
+                                            </tbody>
+                                        </table>
+                                    </section>
+
+                          

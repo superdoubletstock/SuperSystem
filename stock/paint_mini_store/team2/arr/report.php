@@ -140,7 +140,7 @@ if ($sub_role == "paint_main") {
                     }
                     ?>
                   <li class="mt">
-                        <a  href="dashboard.php">
+                        <a  href="#">
                             <i class="fa fa-dashboard"></i>
                             <span>Dashboard</span>
                         </a>
@@ -160,16 +160,9 @@ if ($sub_role == "paint_main") {
                         </a>
 
                     </li>
-                       <li class="sub-menu">
-                        <a href="incoming_notification.php">
-                            <i class="fa fa-book"></i>
-                            <span>Incoming Notification</span>
-                        </a>
-
-                    </li>
 
                     <li class="sub-menu">
-                        <a  href="history.php">
+                        <a   href="history.php">
                             <i class="fa fa-book"></i>
                             <span>History</span>
                         </a>

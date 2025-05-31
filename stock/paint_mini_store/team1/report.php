@@ -195,23 +195,28 @@ if ($sub_role == "paint_main") {
                     <div class="col-lg-12 main-chart">
                       
                       
-  <h1>Main Store Report</h1>
+  <h1>Paint Mini Store Report</h1>
     <div class="row mt">
         <div class="col-lg-12">
             <div class="content-panel">
 
                 <?php
                 include("connect.php");
-                $main_store_query = "SELECT 
-                    main_store_report.item_code, main_store_report.stock_in, main_store_report.stock_out, 
-                    main_store_report.balance, main_store_report.saved_by, main_store_report.saved_date,
+                $pmt1_store_query = "SELECT 
+                    paint_mini_store_report.item_code,
+                     paint_mini_store_report.stock_in,
+                      paint_mini_store_report.stock_out, 
+                    paint_mini_store_report.balance, 
+                    paint_mini_store_report.saved_by,
+                     paint_mini_store_report.saved_date,
                     inventory_items.item_description AS item_description,
-                    inventory_items.category AS category, inventory_items.uom AS uom
-                    FROM main_store_report 
-                    INNER JOIN inventory_items ON main_store_report.item_code = inventory_items.item_code $val";
+                    inventory_items.category AS category, 
+                    inventory_items.uom AS uom
+                    FROM paint_mini_store_report 
+                    INNER JOIN inventory_items ON paint_mini_store_report.item_code = inventory_items.item_code $val";
                 
-                $main_store_query_run = mysqli_query($conn, $main_store_query);
-                $main_store_query_run_data = mysqli_fetch_all($main_store_query_run, MYSQLI_ASSOC);
+                $pmt1_store_query_run = mysqli_query($conn, $pmt1_store_query);
+                $pmt1_store_query_run_data = mysqli_fetch_all($pmt1_store_query_run, MYSQLI_ASSOC);
                 ?>
 
                 <input type="text" id="ReportSearchInput" class="form-control" placeholder="Search for History..." style="margin-bottom: 10px; margin-right: 3%; width: 250px; float: right;">
@@ -240,7 +245,7 @@ if ($sub_role == "paint_main") {
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($main_store_query_run_data as $request): ?>
+                            <?php foreach ($pmt1_store_query_run_data as $request): ?>
                                 <tr class="reportRow">
                                  <td><?= $request['report_id']; ?></td>
                                   
@@ -267,12 +272,6 @@ if ($sub_role == "paint_main") {
         </div>
     </div>
 </div>
-
-
-
-
-
-
                      
                     </div>
                     </div><!-- /col-lg-3 -->

@@ -211,8 +211,23 @@ if ($sub_role == "paint_main") {
                                     include("connect.php");
 
                                     $main_store_query = "SELECT 
-                 main_store_request.In_out,main_store_request.team2_accept,main_store_request.department,main_store_request.status_temp,main_store_request.cancel,main_store_request.team1_accepet,main_store_request.qnty ,main_store_request.transaction_id,main_store_request.requested_date,main_store_request.InFrom_OutTo,main_store_request.requested_by,main_store_request.In_Out,main_store_request.team1,main_store_request.team2 ,
-                inventory_items.item_description AS item_description ,inventory_items.item_code AS item_code ,inventory_items.category AS category, inventory_items.uom AS uom
+                 main_store_request.In_out,
+                 main_store_request.team2_accept,
+                 main_store_request.department,
+             main_store_request.requested_by,
+                 main_store_request.cancel,
+                 main_store_request.team1_accepet,
+                 main_store_request.qnty ,
+                 main_store_request.transaction_id,
+                 main_store_request.requested_date,
+                 main_store_request.InFrom_OutTo,
+                 main_store_request.In_Out,
+                 main_store_request.team1,
+                 main_store_request.team2 ,
+                inventory_items.item_description AS item_description ,
+                inventory_items.item_code AS item_code ,
+                inventory_items.category AS category, 
+                inventory_items.uom AS uom
                 FROM main_store_request INNER JOIN inventory_items ON main_store_request.item_code = inventory_items.item_code where status='active' and cancel='0' $val";
                                     $main_store_query_run = mysqli_query($conn, $main_store_query);
                                     $main_store_query_run_data = mysqli_fetch_all($main_store_query_run, MYSQLI_ASSOC);
