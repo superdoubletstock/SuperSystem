@@ -101,7 +101,16 @@ if (isset($_POST['accept_request'])) {
     }
 
     // ***************************requst_query_for_team2*******************************************
-
+if ($db_department == "paint_mini_store"){
+        $val="paint_mini_store_histrory";
+        $val2="paint_mini_store_balance";
+        $val3="paint_mini_store_request";
+    }
+     else if ($db_department == "fiber_mini_store"){
+        $val="fiber_mini_store_histrory";
+        $val2="fiber_mini_store_balance";
+        $val3="fiber_mini_store_request";
+    }
         // ***************************paint mini store request*******************************************
     $main_store_balance_query = "SELECT * FROM paint_mini_store_request WHERE transaction_id = '$acceptItemCode'";
     $main_store_balance_query_run = mysqli_query($conn, $main_store_balance_query);
@@ -118,7 +127,7 @@ if (isset($_POST['accept_request'])) {
     } else {
         echo "Database query failed: " . mysqli_error($conn);
     }
-
+     
     // ***************************paint mini store request*******************************************
 
     if ($role == "team1") {
@@ -168,7 +177,8 @@ if (isset($_POST['accept_request'])) {
 
                     echo "Insufficient stock balance for item: $acceptItemCode2";
                 }
-            } else if ($db_In_Out_status = "IN") {
+            } 
+            else if ($db_In_Out_status = "IN") {
 
                 // we excute in function
                 $new_balance = $db_balance + $db_qnty;
@@ -217,7 +227,19 @@ if (isset($_POST['accept_request'])) {
         $stmt2->close();
 
         $conn->close();
-    } else if ($role == "team2") {
+    } 
+
+
+
+
+
+
+
+
+
+
+
+    else if ($role == "team2") {
         // dawit
         $team2 = 1;
         $team2_accept = $fullname . "  " . "Accepted";

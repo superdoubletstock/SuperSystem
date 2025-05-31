@@ -183,6 +183,21 @@ $password = $_SESSION['password']; // Not recommended to show
                             <span>Stock Status</span>
                         </a>
                     </li>
+
+                     <li class="sub-menu">
+                        <a href="fixed_asset.php">
+                            <i class="fa fa-th"></i>
+                            <span>Fixed Asset</span>
+                        </a>
+                    </li>
+                    
+
+                        <li class="sub-menu">
+                        <a href="arrchive.php">
+                            <i class="fa fa-th"></i>
+                            <span>Arrchive</span>
+                        </a>
+                    </li>
                     <li class="sub-menu">
                         <a href="settings.php">
                             <i class="fa fa-th"></i>
