@@ -42,6 +42,19 @@ $password = $_SESSION['password']; // Not recommended to show
     <!-- Custom styles for this template -->
     <link href="../assets/css/style.css" rel="stylesheet">
     <link href="../assets/css/style-responsive.css" rel="stylesheet">
+
+    <style>
+        .fa-angle-right {
+            font-weight: 900;
+            font-size: 22px;
+            text-shadow:
+                1px 0 currentColor,
+                0 1px currentColor,
+                1px 1px currentColor,
+                2px 0 currentColor,
+                0 2px currentColor;
+        }
+    </style>
 </head>
 
 <body>
@@ -89,7 +102,7 @@ $password = $_SESSION['password']; // Not recommended to show
                     <h5 class="centered"><?php echo $fullname; ?></h5>
 
                     <li class="mt">
-                        <a href="dashboard.php">
+                        <a class="active" href="dashboard.php">
                             <i class="fa fa-dashboard"></i>
                             <span>Dashboard</span>
                         </a>
@@ -99,70 +112,79 @@ $password = $_SESSION['password']; // Not recommended to show
                         <a href="javascript:;">
                             <i class="fa fa-desktop"></i>
                             <span>Super Store List</span>
+                            <i class="fa fa-angle-right pull-right"></i>
                         </a>
                         <ul class="sub">
                             <!-- main store -->
-                            <li  class="sub-menu">
-                                <a href="../main_store/dashboard.php">
+                            <li class="sub-menu">
+                                <a href="../main_store/store/dashboard.php">
                                     <i class="fa fa-dashboard"></i>
                                     <span>Main Store</span>
                                 </a>
                             </li>
-
-                            <!-- main store -->
 
                             <!-- mini Store -->
                             <li class="sub-menu">
                                 <a href="javascript:;">
                                     <i class="fa fa-desktop"></i>
                                     <span>Mini Store</span>
+                                    <i class="fa fa-angle-right pull-right"></i>
                                 </a>
                                 <ul class="sub">
-                                    <li><a href="../fiber_mini_store/dashboard.php">FIBER MINI STORE</a></li>
-                                    <li><a href="../paint_mini_store/dashboard.php">PAINT MINI STORE</a></li>
+                                    <li><a href="../fiber_mini_store/store/dashboard.php">FIBER MINI STORE</a></li>
+                                    <li><a href="../paint_mini_store/store/dashboard.php">PAINT MINI STORE</a></li>
                                 </ul>
                             </li>
-                            <!-- mini store -->
-
                             <!-- mini mini Store -->
                             <li class="sub-menu">
                                 <a href="javascript:;">
                                     <i class="fa fa-desktop"></i>
                                     <span>Mini-Mini Store</span>
+                                    <i class="fa fa-angle-right pull-right"></i>
                                 </a>
                                 <ul class="sub">
-                                    <li><a href="../paint_mini_mini_store/dashboard.php">PAINT MINI MINI STORE</a></li>
-                                    <li><a href="../fiber_mini_mini_store/dashboard.php">FIBER MINI MINI STORE</a></li>
-
+                                    <li><a href="../paint_mini_mini_store/store/dashboard.php">PAINT MINI MINI STORE</a></li>
+                                    <li><a href="../fiber_mini_mini_store/store/dashboard.php">FIBER MINI MINI STORE</a></li>
                                 </ul>
                             </li>
-                            <!-- mini mini  store -->
-                             <!-- calcium store -->
-                               <li  class="sub-menu">
-                                <a href="#">
+                            <!-- calcium store -->
+                            <li class="sub-menu">
+                                <a href="../calcium_store/store/dashboard.php">
                                     <i class="fa fa-dashboard"></i>
                                     <span>Calcium store</span>
                                 </a>
                             </li>
-                             <!-- calcium store -->
-
-                                  <!-- marble store -->
-                               <li  class="sub-menu">
-                                <a href="#">
+                            <!-- marble store -->
+                            <li class="sub-menu">
+                                <a href="../marble_store/store/dashboard.php">
                                     <i class="fa fa-dashboard"></i>
                                     <span>Marble store</span>
                                 </a>
                             </li>
-                             <!-- marble store -->
-
                         </ul>
                     </li>
-
                     <li class="sub-menu">
-                        <a href="inventoryItems.php">
-                            <i class="fa fa-th"></i>
+                        <a href="javascript:;">
+                            <i class="fa fa-desktop"></i>
                             <span>Inventory Items</span>
+                            <i class="fa fa-angle-right pull-right"></i>
                         </a>
+                        <ul class="sub">
+                    
+                            <li class="sub-menu">
+                                <a href="RawMaterials.php">
+                                    <i class="fa fa-dashboard"></i>
+                                    <span>Raw Material</span>
+                                </a>
+                            </li>
+                       
+                            <li class="sub-menu">
+                                <a href="FixedAssets.php">
+                                    <i class="fa fa-dashboard"></i>
+                                    <span>Fixed Asset</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
 
                     <li class="sub-menu">
@@ -172,7 +194,7 @@ $password = $_SESSION['password']; // Not recommended to show
                         </a>
                     </li>
                     <li class="sub-menu">
-                        <a href="capitalixation.php">
+                        <a href="capitalization.php">
                             <i class="fa fa-th"></i>
                             <span>Stock Capitalization</span>
                         </a>
@@ -184,25 +206,51 @@ $password = $_SESSION['password']; // Not recommended to show
                         </a>
                     </li>
 
-                     <li class="sub-menu">
-                        <a href="fixed_asset.php">
-                            <i class="fa fa-th"></i>
-                            <span>Fixed Asset</span>
-                        </a>
-                    </li>
-                    
-
-                        <li class="sub-menu">
-                        <a href="arrchive.php">
-                            <i class="fa fa-th"></i>
-                            <span>Arrchive</span>
-                        </a>
-                    </li>
                     <li class="sub-menu">
-                        <a href="settings.php">
+                        <a href="asset_managment.php">
                             <i class="fa fa-th"></i>
-                            <span>Settings</span>
+                            <span>Asset Management</span>
                         </a>
+                    </li>
+
+                    <li class="sub-menu">
+                        <a href="javascript:;">
+                            <i class="fa fa-desktop"></i>
+                            <span>Admin Tools</span>
+                            <i class="fa fa-angle-right pull-right"></i>
+                        </a>
+                        <ul class="sub">
+                        
+                            <li class="sub-menu">
+                                <a href="Settings.php">
+                                    <i class="fa fa-th"></i>
+                                    <span>Setings</span>
+                                </a>
+                            </li>
+                          
+                            <li class="sub-menu">
+                                <a href="User_Role.php">
+                                    <i class="fa fa-th"></i>
+                                    <span>Feedback Center</span>
+                                </a>
+                            </li>
+
+                            <li class="sub-menu">
+                                <a href="User_Role.php">
+                                    <i class="fa fa-th"></i>
+                                    <span>Users & Roles</span>
+                                </a>
+                            </li>
+
+                            <li class="sub-menu">
+                                <a href="activity_history.php">
+                                    <i class="fa fa-th"></i>
+                                    <span>Activity History</span>
+                                </a>
+                            </li>
+
+
+                        </ul>
                     </li>
 
 

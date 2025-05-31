@@ -101,33 +101,7 @@ if (isset($_POST['accept_request'])) {
     }
 
     // ***************************requst_query_for_team2*******************************************
-if ($db_department == "paint_mini_store"){
-        $val="paint_mini_store_histrory";
-        $val2="paint_mini_store_balance";
-        $val3="paint_mini_store_request";
-    }
-     else if ($db_department == "fiber_mini_store"){
-        $val="fiber_mini_store_histrory";
-        $val2="fiber_mini_store_balance";
-        $val3="fiber_mini_store_request";
-    }
-        // ***************************paint mini store request*******************************************
-    $main_store_balance_query = "SELECT * FROM paint_mini_store_request WHERE transaction_id = '$acceptItemCode'";
-    $main_store_balance_query_run = mysqli_query($conn, $main_store_balance_query);
-    if ($main_store_balance_query_run) {
-        if (mysqli_num_rows($main_store_balance_query_run) > 0) {
-            foreach ($main_store_balance_query_run as $balance_row) {
 
-                $pm_db_team2_status_accept = $balance_row['team2_accept'];
-                $pm_db_team1_status_accept = $balance_row['team1_accepet'];
-            }
-        } else {
-            echo "The item is not in the main store item list.";
-        }
-    } else {
-        echo "Database query failed: " . mysqli_error($conn);
-    }
-     
     // ***************************paint mini store request*******************************************
 
     if ($role == "team1") {
@@ -161,10 +135,28 @@ if ($db_department == "paint_mini_store"){
                         $pm_new_balance = $pm_db_balance + $db_qnty; //we add
                         $pm_stock_out = 0;
                         $pm_stock_in = $db_qnty;
+                         $stmt2 = $conn->prepare("UPDATE main_store_request SET team1 = ? , team1_accepet = ? WHERE transaction_id = ?");
+        $stmt2->bind_param("ssi", $team1, $team1_accept, $acceptItemCode);
+
+        $stmtExecuted = $stmt->execute();
+        $stmt2Executed = $stmt2->execute();
+
+                        if($db_team1_status==1 && $db_team2_status==1){
+                                $main_store_balance_query = "SELECT * FROM paint_mini_store_request WHERE transaction_id = '$acceptItemCode'";
+$main_store_balance_query_run = mysqli_query($conn, $main_store_balance_query);
+if ($main_store_balance_query_run) {
+    if (mysqli_num_rows($main_store_balance_query_run) > 0) {
+        $balance_row = mysqli_fetch_assoc($main_store_balance_query_run);
+        $pm_db_team2_status_accept = $balance_row['team2_accept'];
+        $pm_db_team1_status_accept = $balance_row['team1_accepet'];
+    }}
 
                         $stmt3 = $conn->prepare("INSERT INTO paint_mini_store_history(item_code, stock_in, stock_out, balance,requested_by,team1_accept,team2_accept) VALUES (?, ?, ?, ?,?,?,?)");
                         $stmt3->bind_param("sdddsss", $acceptItemCode2, $pm_stock_in, $pm_stock_out, $pm_new_balance, $db_requested_by, $pm_db_team1_status_accept, $pm_db_team2_status_accept); // Adjust types accordingly
                         $stmt3Executed = $stmt3->execute();
+
+                        }
+                    
 
 
                         $stmt4 = $conn->prepare("UPDATE paint_mini_store_balance SET balance = ? WHERE item_code = ?");
@@ -177,8 +169,7 @@ if ($db_department == "paint_mini_store"){
 
                     echo "Insufficient stock balance for item: $acceptItemCode2";
                 }
-            } 
-            else if ($db_In_Out_status = "IN") {
+            } else if ($db_In_Out_status = "IN") {
 
                 // we excute in function
                 $new_balance = $db_balance + $db_qnty;
@@ -227,18 +218,10 @@ if ($db_department == "paint_mini_store"){
         $stmt2->close();
 
         $conn->close();
+
     } 
-
-
-
-
-
-
-
-
-
-
-
+    
+    
     else if ($role == "team2") {
         // dawit
         $team2 = 1;
@@ -248,6 +231,10 @@ if ($db_department == "paint_mini_store"){
         if ($db_team1_status == 1) {
             // this means they have already accepted  
             if ($db_In_Out_status == "OUT") {
+                   $stmt2 = $conn->prepare("UPDATE main_store_request SET team2 = ? ,team2_accept=? WHERE transaction_id = ?");
+        $stmt2->bind_param("ssi", $team2, $team2_accept, $acceptItemCode);
+        $stmtExecuted = $stmt2->execute();
+        $stmt2Executed = $stmt2->execute();
                 //the the action is stock out
 
                 $new_balance = $db_balance - $db_qnty; //we add
@@ -268,18 +255,26 @@ if ($db_department == "paint_mini_store"){
                     $stmt3Executed = $stmt3->execute();
 
              
-
-
                         if ($db_department == "paint_mini_store") {
                         $pm_new_balance = $pm_db_balance + $db_qnty; //we add
                         $pm_stock_out = 0;
                         $pm_stock_in = $db_qnty;
+                           if($db_team1_status==1 && $db_team2_status==1){
+                                $main_store_balance_query = "SELECT * FROM paint_mini_store_request WHERE transaction_id = '$acceptItemCode'";
+$main_store_balance_query_run = mysqli_query($conn, $main_store_balance_query);
+if ($main_store_balance_query_run) {
+    if (mysqli_num_rows($main_store_balance_query_run) > 0) {
+        $balance_row = mysqli_fetch_assoc($main_store_balance_query_run);
+        $pm_db_team2_status_accept = $balance_row['team2_accept'];
+        $pm_db_team1_status_accept = $balance_row['team1_accepet'];
+    }}
 
                         $stmt3 = $conn->prepare("INSERT INTO paint_mini_store_history(item_code, stock_in, stock_out, balance,requested_by,team1_accept,team2_accept) VALUES (?, ?, ?, ?,?,?,?)");
                         $stmt3->bind_param("sdddsss", $acceptItemCode2, $pm_stock_in, $pm_stock_out, $pm_new_balance, $db_requested_by, $pm_db_team1_status_accept, $pm_db_team2_status_accept); // Adjust types accordingly
                         $stmt3Executed = $stmt3->execute();
 
-
+                        }
+                               
                         $stmt4 = $conn->prepare("UPDATE paint_mini_store_balance SET balance = ? WHERE item_code = ?");
                         $stmt4->bind_param("ss", $pm_new_balance, $acceptItemCode2);
                         $stmt4Executed = $stmt4->execute();
